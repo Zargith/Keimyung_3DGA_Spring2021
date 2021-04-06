@@ -20,8 +20,7 @@ public class Spawner : MonoBehaviour
     void randomSpawn()
     {
         GameObject spawned = Instantiate(_spawnable[Random.Range(0, _spawnable.Length)], transform);
-        spawned.transform.localPosition = new Vector3(Random.Range(_spawnZoneOrigin.localPosition.x, _spawnZoneEnd.localPosition.x), Random.Range(_spawnZoneOrigin.localPosition.y, _spawnZoneEnd.localPosition.y), Random.Range(_spawnZoneOrigin.localPosition.z, _spawnZoneEnd.localPosition.z));
-        spawned.GetComponent<Rigidbody>().AddForce(Vector3.up * _spawnForce, ForceMode.Impulse);
+        spawned.GetComponent<Launchable>().Launch(_spawnZoneOrigin.localPosition, _spawnZoneEnd.localPosition);
 
         if (!_stop)
         {
