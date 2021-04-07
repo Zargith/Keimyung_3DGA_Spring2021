@@ -6,6 +6,7 @@ TagManager:
   tags:
   - basketball_ball_valid
   - basketball_ball_invalid
+  - player_hand
   layers:
   - Default
   - TransparentFX
