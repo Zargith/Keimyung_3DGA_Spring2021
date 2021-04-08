@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class mini_basktball_reset_ball_tag : MonoBehaviour
+public class mini_basketball_reset_ball_tag : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
