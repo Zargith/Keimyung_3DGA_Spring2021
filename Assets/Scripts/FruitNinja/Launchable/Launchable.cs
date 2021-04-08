@@ -11,27 +11,27 @@ public class Launchable : MonoBehaviour
 
 /*Patern to do:
  * 
- * Apple:
- *  Normal launch
+ * xApple:
+ *  Normal launch 
  *  
- * Banana:
+ * xBanana:
  * Side launch 
  * 
  * Bomb:
  * 
- * Kiwi:
+ * xKiwi:
  * go very high
  * 
  * mango:
  * toward the player
  * 
  * orange:
- * arch
+ * normal
  * 
- * pineapple:
+ * xpineapple:
  * Only from the top
  * 
- * watermelon:
+ * xwatermelon:
  * slow but not high
  * 
  * 

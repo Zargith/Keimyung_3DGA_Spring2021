@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Watermelon : Launchable
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] float _spawnForce;
+    [SerializeField] float _maxSpeed;
+    Rigidbody rb;
+
+
+    private void OnEnable()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    override public void Launch(Vector3 beg, Vector3 end)
     {
-        
+        print("kiwi");
+        transform.localPosition = new Vector3(Random.Range(beg.x, end.x), beg.y, Random.Range(beg.z, end.z));
+        rb.AddForce(Vector3.up * _spawnForce, ForceMode.Impulse);
+        rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 10), ForceMode.Impulse);
     }
 }
