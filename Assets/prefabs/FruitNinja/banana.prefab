@@ -93,6 +93,8 @@ GameObject:
   - component: {fileID: 5812242418485752783}
   - component: {fileID: 5812242418485752780}
   - component: {fileID: 5812242418485752782}
+  - component: {fileID: 257547271}
+  - component: {fileID: 257547272}
   m_Layer: 0
   m_Name: banana
   m_TagString: Untagged
@@ -107,7 +109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812242418485752781}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
@@ -139,7 +141,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812242418485752781}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 2.5
   m_Height: 12
@@ -158,3 +160,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnForce: 10
+--- !u!114 &257547271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812242418485752781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5cacb76cba02543ac5277e19a4100d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSliceMaterial: {fileID: 2100000, guid: 59e06ead106776245a9dda3457cc420d, type: 2}
+  asynchronously: 1
+  useLazyRunner: 0
+  _sliceId: 0
+  _lastSliceTime: -3.4028235e+38
+  delayBetweenSlices: 1
+--- !u!114 &257547272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812242418485752781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4231669f3526949a4b889196486fbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
