@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2449974160516885172}
   - component: {fileID: -1819191525750618893}
   - component: {fileID: -1212639442085508453}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mango
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 1708544329359125424}
   - component: {fileID: 7434055715177162730}
   - component: {fileID: 6644750370637570254}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mango
   m_TagString: Untagged
   m_Icon: {fileID: 0}

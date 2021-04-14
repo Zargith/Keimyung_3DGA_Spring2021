@@ -13,7 +13,6 @@ public class Banana : Launchable
 
     override public void Launch(Vector3 beg, Vector3 end)
     {
-        print("banana");
         float x = beg.x;
         Vector3 dir = (end - beg);
         if (Random.value > 0.5f)

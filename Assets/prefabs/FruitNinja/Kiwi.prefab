@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -340447010044735182}
   - component: {fileID: 1960810680}
   - component: {fileID: 1960810681}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Kiwi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 7828247127716110506}
   - component: {fileID: 6443379036912487611}
   - component: {fileID: 4538889515458768765}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

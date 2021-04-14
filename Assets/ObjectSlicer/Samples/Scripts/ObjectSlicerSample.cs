@@ -44,6 +44,7 @@ namespace BzKovSoft.ObjectSlicer.Samples
 			Slice(plane, callBack);
 		}
 
+
 		protected override BzSliceTryData PrepareData(Plane plane)
 		{
 			// remember some data. Later we could use it after the slice is done.

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5529753697192013663}
   - component: {fileID: 7697052818108325211}
   - component: {fileID: 4666249554021382293}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Watermelon_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: -8981893863860235167}
   - component: {fileID: 282622064}
   - component: {fileID: 282622065}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: watermelon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

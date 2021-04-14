@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3184964745808786915}
   - component: {fileID: 1663413370}
   - component: {fileID: 1663413375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: apple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 7908475076044911745}
   - component: {fileID: 808946099880280779}
   - component: {fileID: 3984551623728281543}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: apple_Subdivision_Surface_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 9032635633715122835}
   - component: {fileID: 82553642449391235}
   - component: {fileID: 351787928730208004}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: apple_Subdivision_Surface_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
