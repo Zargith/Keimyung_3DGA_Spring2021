@@ -38,7 +38,7 @@ public class mini_basketball_button_object : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "player_hand" && !manager.gameStarted) {
+        if (other.gameObject.CompareTag("player_hand") && !manager.gameStarted) {
             buttonIsPushed = true;
             manager.startGame();
         }
