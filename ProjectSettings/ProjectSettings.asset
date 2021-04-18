@@ -146,6 +146,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.DefaultCompany.Keimyung_3DGA_Spring2021
     Standalone: com.DefaultCompany.Keimyung3DGASpring2021
   buildNumber:
     Standalone: 0
