@@ -6,10 +6,13 @@ public class Spawner : MonoBehaviour
     [SerializeField] Transform _spawnZoneOrigin;
     [SerializeField] Transform _spawnZoneEnd;
     [SerializeField] GameObject[] _spawnable;
-    [SerializeField] [Range(0, 10)] float _intervalMin;
-    [SerializeField] [Range(0, 5)] float _intervalVariationMax;
-    [SerializeField]  float _spawnForce;
+    [SerializeField] [Range(0, 5)] float _intervalMin;
     public bool _stop = false;
+    public int _roundTime;
+
+    int _roundNumber = 1;
+    private bool _started = false;
+    private float elapsedTime = 0;
 
 
     void Start()
@@ -19,15 +22,35 @@ public class Spawner : MonoBehaviour
 
     void randomSpawn()
     {
-        GameObject spawned = Instantiate(_spawnable[Random.Range(0, _spawnable.Length)], transform);
-        spawned.GetComponent<Launchable>().Launch(_spawnZoneOrigin.localPosition, _spawnZoneEnd.localPosition);
+        _started = true;
+        GameObject spawned = Instantiate(_spawnable[Random.Range(0, _roundNumber)], transform);
+        spawned.GetComponent<Launchable>().Launch(_spawnZoneOrigin.position, _spawnZoneEnd.position);
 
         if (!_stop)
         {
-            Invoke("randomSpawn", _intervalMin + Random.Range(0, _intervalVariationMax));
+            Invoke("randomSpawn", _intervalMin);
         }
 
     }
+
+    private void Update()
+    {
+        if (_started && !_stop)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime - _roundTime > 0)
+            {
+                elapsedTime = 0;
+                ++_roundNumber;
+                _intervalMin -= 0.05f;
+                if (_roundNumber > _spawnable.Length)
+                {
+                    _stop = true;
+                }
+            }
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
