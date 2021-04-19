@@ -12,16 +12,20 @@ public class HandGun : MonoBehaviour
     private float _currentCd = 0f;
 
     private float _lastSmart = 0;
+    private GestureProcessor _gp;
 
     void Start()
     {
         _lastRotation = transform.rotation;
+        _gp = FindObjectOfType<GestureProcessor>();
 
         Debug.Log("NEW SIMULATION ########################################################################################");
     }
 
     void FixedUpdate()
     {
+        var gunGestureCorrespondance = _gp.CompareGesture(Hand.Right, "Thumbsup");
+
         var delta = GetQuaternionDiff(transform.rotation, _lastRotation);
         var deltaEuler = delta.eulerAngles;
 
@@ -34,20 +38,21 @@ public class HandGun : MonoBehaviour
         if (deltaEuler.z > 180)
             deltaEuler.z -= 360;
 
-        var smart = Mathf.Sqrt(deltaEuler.x * deltaEuler.x + deltaEuler.z * deltaEuler.z) / Mathf.Max(1f, Mathf.Abs(deltaEuler.y));
+        var smart = gunGestureCorrespondance * Mathf.Sqrt(deltaEuler.x * deltaEuler.x + deltaEuler.z * deltaEuler.z) / Mathf.Max(1f, Mathf.Abs(deltaEuler.y));
         var deltasmart = (smart - _lastSmart);
 
         _lastSmart = smart;
 
-        Debug.Log("Right Delta x : " + deltaEuler.x);
-        Debug.Log("Right Delta y : " + deltaEuler.y);
-        Debug.Log("Right Delta z : " + deltaEuler.z);
+        //Debug.Log("Right Delta x : " + deltaEuler.x);
+        //Debug.Log("Right Delta y : " + deltaEuler.y);
+        //Debug.Log("Right Delta z : " + deltaEuler.z);
+        Debug.Log("Thumbsup correspondance : " + gunGestureCorrespondance);
 
 
-        Debug.Log("Rotation delta : " + Quaternion.Angle(Quaternion.identity, delta));
+        //Debug.Log("Rotation delta : " + Quaternion.Angle(Quaternion.identity, delta));
 
-        Debug.Log("smart : " + smart);
-        Debug.Log("DeltaSmart : " + deltasmart);
+        //Debug.Log("smart : " + smart);
+        //Debug.Log("DeltaSmart : " + deltasmart);
 
 
         if (_currentCd > 0)
