@@ -42,6 +42,9 @@ public class SnakeMovement : MonoBehaviour
     private plane _pastPlane = plane.RIGHT;
     private Vector3 prevPos;
     private Vector3 prevRot;
+    [SerializeField] pinchSnake pinchLeft;
+    [SerializeField] pinchSnake pinchRight;
+
 
     // Start is called before the first frame update
     void Start()
@@ -92,13 +95,17 @@ public class SnakeMovement : MonoBehaviour
                 * speed * Time.smoothDeltaTime, Space.World);
         }
 
-        if (Input.GetAxis("Horizontal") != 0) {
+        bool isPinchingLeft = pinchLeft.isPinching();
+        bool isPinchingRight = pinchRight.isPinching();
+        Debug.Log("isPinchingLeft " + isPinchingLeft);
+        Debug.Log("isPinchingRight " + isPinchingRight);
+        if (Input.GetAxis("Horizontal") != 0 || isPinchingLeft || isPinchingRight) {
             // Change dir
-            preDir = Input.GetAxis("Horizontal") > 0 ? Dir.RIGHT : Dir.LEFT;
+            preDir = Input.GetAxis("Horizontal") > 0 || isPinchingRight ? Dir.RIGHT : Dir.LEFT;
             BodyParts[0].Rotate((_currPlane == plane.RIGHT ? Vector3.forward : _currPlane == plane.LEFT ? Vector3.forward : Vector3.right) *
                 rotationSpeed *
                 Time.deltaTime *
-                (_currPlane == plane.RIGHT ? -1 : _currPlane == plane.LEFT ? 1 : -1) * Input.GetAxis("Horizontal"));
+                (_currPlane == plane.RIGHT ? -1 : _currPlane == plane.LEFT ? 1 : -1) * (preDir == Dir.RIGHT ? 1 : -1));
         }
 
         for (int i = 1 ; i < BodyParts.Count ; ++i) {
