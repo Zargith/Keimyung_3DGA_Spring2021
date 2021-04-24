@@ -535,10 +535,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 1
+  m_Radius: 0.1
+  m_Height: 0.2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.09, y: 0, z: 0}
 --- !u!54 &832503983
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -623,14 +623,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: basketball_ball
       objectReference: {fileID: 0}
-    - target: {fileID: 7156339477623965620, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7156339477623965620, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
-      propertyPath: m_TagString
-      value: basketball_ball_valid
-      objectReference: {fileID: 0}
     - target: {fileID: 7501796838053371150, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -677,34 +669,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
---- !u!1 &995583205 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7156339477623965620, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
-  m_PrefabInstance: {fileID: 995583204}
-  m_PrefabAsset: {fileID: 0}
---- !u!135 &995583206 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: -4168438301882425862, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
-  m_PrefabInstance: {fileID: 995583204}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &995583207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 995583205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d61468f8b77ae4b92c344bc9a600fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_allowOffhandGrab: 1
-  m_snapPosition: 0
-  m_snapOrientation: 0
-  m_snapOffset: {fileID: 0}
-  m_grabPoints:
-  - {fileID: 995583206}
 --- !u!4 &1159678156 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7053476208307669650, guid: cfc521b4269b93d4f996b88a5d04c2a9, type: 3}
@@ -787,6 +751,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7984912475421330724, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.094
+      objectReference: {fileID: 0}
     - target: {fileID: 7987534705134081058, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -825,11 +793,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.471
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.68
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalRotation.w
@@ -858,6 +826,18 @@ PrefabInstance:
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989326251335035993, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
+      propertyPath: resetTrackerOnLoad
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8018887148867579240, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
+      propertyPath: _enablePhysicsCapsules
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8018887149572481798, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
+      propertyPath: _enablePhysicsCapsules
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
@@ -996,10 +976,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 1
+  m_Radius: 0.1
+  m_Height: 0.2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.09, y: 0, z: 0}
 --- !u!54 &1592348977
 Rigidbody:
   m_ObjectHideFlags: 0

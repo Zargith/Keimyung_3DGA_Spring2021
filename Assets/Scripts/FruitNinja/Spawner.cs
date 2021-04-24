@@ -17,6 +17,7 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 0.75f;
         Invoke("randomSpawn", 5);
     }
 

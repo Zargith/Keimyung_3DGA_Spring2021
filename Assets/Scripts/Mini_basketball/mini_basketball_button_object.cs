@@ -36,13 +36,13 @@ public class mini_basketball_button_object : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision other)
-    {
+     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("player_hand") && !manager.gameStarted) {
             buttonIsPushed = true;
             manager.startGame();
         }
-    }
+    
+}
 
     public bool isButtonPushed()
     {
