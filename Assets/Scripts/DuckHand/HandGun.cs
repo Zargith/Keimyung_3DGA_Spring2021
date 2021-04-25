@@ -7,6 +7,11 @@ public class HandGun : MonoBehaviour
 {
     public Hand Hand = Hand.Right;
     public GameObject BulletPrefab;
+    public GameObject GunPrefab;
+    public GameObject OVRHand;
+
+    public bool EnableShootRayVisual = false;
+    public bool EnableGunMesh = false;
 
     public static float ShootCooldownSeconds = 0.3f;
     public static float GunGestureThreshold = 0.2f;
@@ -21,21 +26,22 @@ public class HandGun : MonoBehaviour
 
     private GestureProcessor m_gp;
 
-    private Vector3 m_lastShotDirection;
-    private Vector3? m_LastPlausibleShotDirection;
+    private Ray m_lastShootingRay;
+    private Ray? m_LastPlausibleShotDirection;
 
+    private GameObject gunInstance;
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, GetShootingDirection());
+        Gizmos.DrawRay(GetShootingRay());
     }
 
     void Start()
     {
         m_lastPitch = GetCurrentPitch();
         m_lastPitchSpeed = 0;
-        m_lastShotDirection = GetShootingDirection();
+        m_lastShootingRay = GetShootingRay();
 
         m_gp = FindObjectOfType<GestureProcessor>();
 
@@ -46,23 +52,31 @@ public class HandGun : MonoBehaviour
     {
         var gunGestureCorrespondance = GetCurrentGunGestureCorrespondance();
 
+        var shootRay = GetShootingRay();
         var pitch = GetCurrentPitch();
         var pitchSpeed = (pitch - m_lastPitch) / Time.deltaTime;
         var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / Time.deltaTime;
 
         if (pitchSpeed > 0 && m_lastPitchSpeed < 0)
-            m_LastPlausibleShotDirection = Vector3.Lerp(m_lastShotDirection, GetShootingDirection(), Mathf.InverseLerp(m_lastPitchSpeed, pitchSpeed, 0));
+        {
+            var lerpVal = Mathf.InverseLerp(m_lastPitchSpeed, pitchSpeed, 0);
+
+            m_LastPlausibleShotDirection = new Ray(
+                Vector3.Lerp(m_lastShootingRay.origin, shootRay.origin, lerpVal),
+                Vector3.Lerp(m_lastShootingRay.direction, shootRay.direction, lerpVal).normalized
+            );
+        }
 
         if (m_currentCd > 0)
         {
             m_currentCd -= Time.deltaTime;
         }
-        else if (gunGestureCorrespondance > GunGestureThreshold 
+        else if (gunGestureCorrespondance > GunGestureThreshold
             && pitchAcceleration > PitchAccelerationShotThreshold
             && m_LastPlausibleShotDirection.HasValue)
         {
-            var ball = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
-            ball.GetComponent<Rigidbody>().AddForce(m_LastPlausibleShotDirection.Value * ShotInitialImpulseForce, ForceMode.Impulse);
+            var ball = Instantiate(BulletPrefab, shootRay.origin, Quaternion.identity);
+            ball.GetComponent<Rigidbody>().AddForce(m_LastPlausibleShotDirection.Value.direction * ShotInitialImpulseForce, ForceMode.Impulse);
 
             m_currentCd = ShootCooldownSeconds;
             m_LastPlausibleShotDirection = null;
@@ -70,7 +84,39 @@ public class HandGun : MonoBehaviour
 
         m_lastPitch = pitch;
         m_lastPitchSpeed = pitchSpeed;
-        m_lastShotDirection = GetShootingDirection();
+        m_lastShootingRay = GetShootingRay();
+
+
+        if (EnableGunMesh) // Gun does not yet match correct position
+        {
+            // Gun/hand switch
+            if (gunGestureCorrespondance > GunGestureThreshold && gunInstance == null)
+            {
+                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
+                OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
+                gunInstance = Instantiate(GunPrefab, transform);
+
+                gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
+            }
+            if (gunGestureCorrespondance < GunGestureThreshold && gunInstance != null)
+            {
+                Destroy(gunInstance);
+                gunInstance = null;
+                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = true;
+                OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
+            }
+        }
+
+
+
+        if (EnableShootRayVisual)
+        {
+            GetComponent<LineRenderer>().enabled = true;
+            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
+            GetComponent<LineRenderer>().SetPosition(1, shootRay.origin + 10 * shootRay.direction);
+        }
+        else
+            GetComponent<LineRenderer>().enabled = false;
     }
 
 
@@ -88,21 +134,31 @@ public class HandGun : MonoBehaviour
     /// </summary>
     float GetCurrentPitch()
     {
-        var shootDir = GetShootingDirection();
-
+        var shootDir = GetShootingRay().direction;
         var horizontal_forward = new Vector3(shootDir.x, 0, shootDir.z);
-        var localUpDirection = -transform.forward;
 
-        float currentPitch = Vector3.Angle(horizontal_forward, localUpDirection);
+        float currentPitch = Vector3.Angle(horizontal_forward, GetUpDirection());
 
         return currentPitch;
     }
 
-    Vector3 GetShootingDirection()
+    Vector3 GetUpDirection()
     {
-        if (Hand == Hand.Right)
-            return -transform.right;
-        else
-            return transform.right;
+        return -transform.forward;
+    }
+
+    Ray GetShootingRay()
+    {
+        var origin = transform.position;
+
+        var skeleton = OVRHand.GetComponent<OVRSkeleton>();
+        if (skeleton.Bones != null && skeleton.Bones.Any())
+            origin = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+
+        return new Ray
+        {
+            origin = origin,
+            direction = (Hand == Hand.Right ? -transform.right : transform.right)
+        };
     }
 }
