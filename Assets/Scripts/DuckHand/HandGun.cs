@@ -10,13 +10,13 @@ public class HandGun : MonoBehaviour
 
     public static float ShootCooldownSeconds = 0.3f;
     public static float GunGestureThreshold = 0.2f;
-    public static float DeltaPitchShotThreshold = 1f;
+    public static float PitchAccelerationShotThreshold = 10_000f;
     public static float ShotInitialImpulseForce = 10f;
 
     private static readonly List<string> kGunGesturesName = new List<string> { "Gun_0", "Gun_1" };
 
-    private float m_lastPitch;
-    private float m_lastDeltaPitch;
+    private float m_lastPitch; // degree
+    private float m_lastPitchSpeed; // degree per second
     private float m_currentCd = 0f;
 
     private GestureProcessor m_gp;
@@ -24,10 +24,17 @@ public class HandGun : MonoBehaviour
     private Vector3 m_lastShotDirection;
     private Vector3? m_LastPlausibleShotDirection;
 
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, GetShootingDirection());
+    }
+
     void Start()
     {
         m_lastPitch = GetCurrentPitch();
-        m_lastDeltaPitch = 0;
+        m_lastPitchSpeed = 0;
         m_lastShotDirection = GetShootingDirection();
 
         m_gp = FindObjectOfType<GestureProcessor>();
@@ -40,18 +47,18 @@ public class HandGun : MonoBehaviour
         var gunGestureCorrespondance = GetCurrentGunGestureCorrespondance();
 
         var pitch = GetCurrentPitch();
-        var deltaPitch = pitch - m_lastPitch;
+        var pitchSpeed = (pitch - m_lastPitch) / Time.deltaTime;
+        var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / Time.deltaTime;
 
-
-        if (deltaPitch > 0 && m_lastDeltaPitch < 0)
-            m_LastPlausibleShotDirection = Vector3.Lerp(m_lastShotDirection, GetShootingDirection(), Mathf.InverseLerp(m_lastDeltaPitch, deltaPitch, 0));
+        if (pitchSpeed > 0 && m_lastPitchSpeed < 0)
+            m_LastPlausibleShotDirection = Vector3.Lerp(m_lastShotDirection, GetShootingDirection(), Mathf.InverseLerp(m_lastPitchSpeed, pitchSpeed, 0));
 
         if (m_currentCd > 0)
         {
             m_currentCd -= Time.deltaTime;
         }
         else if (gunGestureCorrespondance > GunGestureThreshold 
-            && deltaPitch > DeltaPitchShotThreshold
+            && pitchAcceleration > PitchAccelerationShotThreshold
             && m_LastPlausibleShotDirection.HasValue)
         {
             var ball = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
@@ -62,7 +69,7 @@ public class HandGun : MonoBehaviour
         }
 
         m_lastPitch = pitch;
-        m_lastDeltaPitch = deltaPitch;
+        m_lastPitchSpeed = pitchSpeed;
         m_lastShotDirection = GetShootingDirection();
     }
 
@@ -76,12 +83,17 @@ public class HandGun : MonoBehaviour
         return kGunGesturesName.Max(gesture => m_gp.CompareGesture(Hand, gesture));
     }
 
+    /// <summary>
+    /// NOTE: Get inverted if gun is turned upside down
+    /// </summary>
     float GetCurrentPitch()
     {
-        var horizontal_forward = GetShootingDirection();
-        horizontal_forward.y = 0;
+        var shootDir = GetShootingDirection();
 
-        float currentPitch = Vector3.Angle(horizontal_forward, transform.up);
+        var horizontal_forward = new Vector3(shootDir.x, 0, shootDir.z);
+        var localUpDirection = -transform.forward;
+
+        float currentPitch = Vector3.Angle(horizontal_forward, localUpDirection);
 
         return currentPitch;
     }
