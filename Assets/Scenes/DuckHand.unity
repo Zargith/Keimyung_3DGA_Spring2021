@@ -408,14 +408,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7989326251329025509, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
   m_PrefabInstance: {fileID: 370518247}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &420564362
+--- !u!114 &420564363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 420564361}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb79171ce803f24eb5bfcb73da666fc, type: 3}
   m_Name: 
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GestureDatabase:
-  - name: Gun
+  - name: Gun_0
     bones:
     - {x: 0, y: 1, z: 0, w: 0}
     - {x: 0, y: -0, z: -0, w: 1}
@@ -491,9 +491,36 @@ MonoBehaviour:
     - {x: 0, y: -0, z: -0, w: 1}
     - {x: 0, y: -0, z: -0, w: 1}
     hand: 1
+  - name: Gun_1
+    bones:
+    - {x: 0, y: 1, z: 0, w: 0}
+    - {x: 0, y: -0, z: -0, w: 1}
+    - {x: 0.27335984, y: -0.4706611, z: 0.09602061, w: 0.8333862}
+    - {x: 0.26314446, y: 0.069137566, z: -0.100191295, w: 0.9570458}
+    - {x: -0.083023466, y: 0.061867297, z: -0.096234456, w: 0.9899588}
+    - {x: 0.083916746, y: -0.06688505, z: 0.08222704, w: 0.99081945}
+    - {x: 0.029785052, y: 0.05768396, z: -0.092185736, w: 0.9936233}
+    - {x: -0.026268866, y: 0.0040740184, z: -0.11901861, w: 0.9925362}
+    - {x: -0.016514936, y: 0.025812043, z: -0.01319465, w: 0.99944335}
+    - {x: -0.036422096, y: 0.058248796, z: -0.4845761, w: 0.8720473}
+    - {x: -0.012614067, y: -0.004471699, z: -0.6813938, w: 0.73179466}
+    - {x: -0.09221381, y: -0.02484035, z: -0.5791181, w: 0.8096307}
+    - {x: -0.09830798, y: 0.060239773, z: -0.58340675, w: 0.80395484}
+    - {x: -0.041278772, y: -0.022544991, z: -0.73318124, w: 0.67840487}
+    - {x: -0.026759136, y: -0.027887402, z: -0.48362863, w: 0.8744196}
+    - {x: -0.20703599, y: 0.14034285, z: -0.0183118, w: 0.96804166}
+    - {x: 0.083893225, y: 0.003836588, z: -0.6266166, w: 0.77478963}
+    - {x: -0.08959786, y: 0.0019171629, z: -0.7121973, w: 0.69623536}
+    - {x: 0.0022338892, y: -0.04331216, z: -0.46038124, w: 0.8866613}
+    - {x: 0, y: -0, z: -0, w: 1}
+    - {x: 0, y: -0, z: -0, w: 1}
+    - {x: 0, y: -0, z: -0, w: 1}
+    - {x: 0, y: -0, z: -0, w: 1}
+    - {x: 0, y: -0, z: -0, w: 1}
+    hand: 1
   skeleton: {fileID: 1168024930}
   CreationMode: 1
-  NewGestureName: Gun
+  NewGestureName: Gun_1
   GestureCreationKey: 32
 --- !u!114 &1628955556
 MonoBehaviour:
