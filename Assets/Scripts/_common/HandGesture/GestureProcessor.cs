@@ -22,7 +22,8 @@ public class GestureProcessor : MonoBehaviour
 
         return new Gesture
         {
-            bones = skeleton.Bones.Select(b => b.Transform.localRotation).ToList(),
+            bones = skeleton.Bones
+            .Select(b => b.Transform.localRotation).ToList(),
             hand = hand
         };
     }
