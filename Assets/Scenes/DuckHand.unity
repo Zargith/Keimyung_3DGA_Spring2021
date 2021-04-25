@@ -144,6 +144,7 @@ MonoBehaviour:
   BulletPrefab: {fileID: 4445916398859936144, guid: 9cf1d66697a708d4097155237a7f7a84, type: 3}
   GunPrefab: {fileID: 3537414347454840476, guid: 6b4ec8be9ce95af499ca4552cdd701af, type: 3}
   OVRHand: {fileID: 54122900}
+  GestureProcessor: {fileID: 1628955556}
   EnableShootRayVisual: 0
   EnableGunMesh: 0
 --- !u!120 &12844372
@@ -696,6 +697,7 @@ MonoBehaviour:
   BulletPrefab: {fileID: 4445916398859936144, guid: 9cf1d66697a708d4097155237a7f7a84, type: 3}
   GunPrefab: {fileID: 3537414347454840476, guid: 6b4ec8be9ce95af499ca4552cdd701af, type: 3}
   OVRHand: {fileID: 1740126347}
+  GestureProcessor: {fileID: 0}
   EnableShootRayVisual: 0
   EnableGunMesh: 0
 --- !u!1 &806906741
@@ -1287,7 +1289,7 @@ GameObject:
   - component: {fileID: 1628955556}
   - component: {fileID: 1628955555}
   m_Layer: 0
-  m_Name: '[GestureManager]'
+  m_Name: '[DuckHandGestureManager]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

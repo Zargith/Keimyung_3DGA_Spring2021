@@ -9,6 +9,7 @@ public class HandGun : MonoBehaviour
     public GameObject BulletPrefab;
     public GameObject GunPrefab;
     public GameObject OVRHand;
+    public GestureProcessor GestureProcessor;
 
     public bool EnableShootRayVisual = false;
     public bool EnableGunMesh = false;
@@ -23,8 +24,6 @@ public class HandGun : MonoBehaviour
     private float m_lastPitch; // degree
     private float m_lastPitchSpeed; // degree per second
     private float m_currentCd = 0f;
-
-    private GestureProcessor m_gp;
 
     private Ray m_lastShootingRay;
     private Ray? m_LastPlausibleShotDirection;
@@ -42,8 +41,6 @@ public class HandGun : MonoBehaviour
         m_lastPitch = GetCurrentPitch();
         m_lastPitchSpeed = 0;
         m_lastShootingRay = GetShootingRay();
-
-        m_gp = FindObjectOfType<GestureProcessor>();
 
         Debug.Log("NEW SIMULATION ########################################################################################");
     }
@@ -126,7 +123,7 @@ public class HandGun : MonoBehaviour
     /// <returns>[0, 1], the higher the better</returns>
     float GetCurrentGunGestureCorrespondance()
     {
-        return kGunGesturesName.Max(gesture => m_gp.CompareGesture(Hand, gesture));
+        return kGunGesturesName.Max(gesture => GestureProcessor.CompareGesture(Hand, gesture));
     }
 
     /// <summary>
