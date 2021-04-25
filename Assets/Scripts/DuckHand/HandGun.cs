@@ -12,16 +12,16 @@ public class HandGun : MonoBehaviour
     public static float DeltaPitchShotThreshold = 1f;
     public static float ShotInitialImpulseForce = 10f;
 
-    private float _lastPitch;
-    private float _currentCd = 0f;
+    private float m_lastPitch;
+    private float m_currentCd = 0f;
 
-    private GestureProcessor _gp;
+    private GestureProcessor m_gp;
 
 
     void Start()
     {
-        _lastPitch = GetCurrentPitch();
-        _gp = FindObjectOfType<GestureProcessor>();
+        m_lastPitch = GetCurrentPitch();
+        m_gp = FindObjectOfType<GestureProcessor>();
 
         Debug.Log("NEW SIMULATION ########################################################################################");
     }
@@ -46,30 +46,25 @@ public class HandGun : MonoBehaviour
 
     void FixedUpdate()
     {
-        var gunGestureCorrespondance = _gp.CompareGesture(Hand.Right, "Gun");
+        var gunGestureCorrespondance = m_gp.CompareGesture(Hand.Right, "Gun");
 
 
         var pitch = GetCurrentPitch();
-        var deltaPitch = pitch - _lastPitch;
+        var deltaPitch = pitch - m_lastPitch;
 
-        _lastPitch = pitch;
-
-
-        Debug.Log("Gun correspondance : " + gunGestureCorrespondance);
-        Debug.Log("Pitch delta : " + deltaPitch);
-        //Debug.Log("smart : " + smart);
+        m_lastPitch = pitch;
 
 
-        if (_currentCd > 0)
+        if (m_currentCd > 0)
         {
-            _currentCd -= Time.deltaTime;
+            m_currentCd -= Time.deltaTime;
         }
         else if (gunGestureCorrespondance > GunGestureThreshold && deltaPitch > DeltaPitchShotThreshold)
         {
             var ball = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
             ball.GetComponent<Rigidbody>().AddForce(GetShootingDirection() * ShotInitialImpulseForce, ForceMode.Impulse);
 
-            _currentCd = ShootCooldownSeconds;
+            m_currentCd = ShootCooldownSeconds;
         }
     }
 }
