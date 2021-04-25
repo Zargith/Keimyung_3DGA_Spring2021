@@ -7,6 +7,7 @@ TagManager:
   - basketball_ball_valid
   - basketball_ball_invalid
   - player_hand
+  - bullet
   - AirHockey_Corner
   - AirHockey_Paddle
   - AirHockey_Side
@@ -20,7 +21,7 @@ TagManager:
   - UI
   - Fruit
   - 
-  - 
+  - Snake
   - 
   - 
   - 
