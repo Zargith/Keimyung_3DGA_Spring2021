@@ -55,6 +55,7 @@ public class Spawner : MonoBehaviour
     }
 
 
+#if UNITY_EDITOR // This doesn't build properly, so we ignore it when building
     private void OnDrawGizmos()
     {
         if (Selection.activeObject == gameObject || Selection.activeObject == _spawnZoneOrigin.gameObject || Selection.activeObject == _spawnZoneEnd.gameObject)
@@ -64,5 +65,6 @@ public class Spawner : MonoBehaviour
             return;
         }
     }
+#endif
 
 }
