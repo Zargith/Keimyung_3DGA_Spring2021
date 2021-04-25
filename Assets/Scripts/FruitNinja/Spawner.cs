@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+
+    [SerializeField] Transform _spawnContainer;
     [SerializeField] Transform _spawnZoneOrigin;
     [SerializeField] Transform _spawnZoneEnd;
     [SerializeField] GameObject[] _spawnable;
@@ -24,7 +26,7 @@ public class Spawner : MonoBehaviour
     void randomSpawn()
     {
         _started = true;
-        GameObject spawned = Instantiate(_spawnable[Random.Range(0, _roundNumber)], transform);
+        GameObject spawned = Instantiate(_spawnable[Random.Range(0, _roundNumber)], _spawnContainer);
         spawned.GetComponent<Launchable>().Launch(_spawnZoneOrigin.position, _spawnZoneEnd.position);
 
         if (!_stop)
@@ -58,7 +60,7 @@ public class Spawner : MonoBehaviour
         if (Selection.activeObject == gameObject || Selection.activeObject == _spawnZoneOrigin.gameObject || Selection.activeObject == _spawnZoneEnd.gameObject)
         {
             Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawCube(_spawnZoneOrigin.localPosition + (_spawnZoneEnd.localPosition / 2), _spawnZoneEnd.localPosition);
+            Gizmos.DrawCube((_spawnZoneOrigin.position + _spawnZoneEnd.position) / 2, (_spawnZoneOrigin.position - _spawnZoneEnd.position));
             return;
         }
     }

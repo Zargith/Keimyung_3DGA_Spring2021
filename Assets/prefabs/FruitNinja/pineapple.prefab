@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2007680455085350980}
   - component: {fileID: 8964507906809197882}
   - component: {fileID: 4149388919382382640}
-  - component: {fileID: -477632810023270365}
   - component: {fileID: 752167232}
   - component: {fileID: 752167233}
+  - component: {fileID: -477632810023270365}
+  - component: {fileID: -7740715466510764510}
   m_Layer: 6
   m_Name: pineapple
   m_TagString: Untagged
@@ -66,18 +67,6 @@ CapsuleCollider:
   m_Height: 31.62
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 2}
---- !u!114 &-477632810023270365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195536445019470590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3d4304f257df54ea31bb9a9b839416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &752167232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +97,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4231669f3526949a4b889196486fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-477632810023270365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195536445019470590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df3d4304f257df54ea31bb9a9b839416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!75 &-7740715466510764510
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195536445019470590}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 9.2, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &4174746475909924551
 GameObject:
   m_ObjectHideFlags: 0

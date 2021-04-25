@@ -22,9 +22,10 @@ public class Banana : Launchable
         }
         dir.y = 0;
         dir.z = 0;
-        transform.localPosition = new Vector3(x, Random.Range(beg.y, end.y), Random.Range(beg.z, end.z));
+        transform.position = new Vector3(x, end.y, Random.Range(beg.z, end.z));
         rb.AddForce(dir.normalized * _spawnForce, ForceMode.Impulse);
         rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 10), ForceMode.Impulse);
+        print(end);
     }
 
 }
