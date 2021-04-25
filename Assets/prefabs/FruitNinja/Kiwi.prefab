@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 4015335581948425443}
   - component: {fileID: 3473382577981403620}
   - component: {fileID: 3473382577981403621}
-  - component: {fileID: -340447010044735182}
   - component: {fileID: 1960810680}
   - component: {fileID: 1960810681}
+  - component: {fileID: -340447010044735182}
+  - component: {fileID: -4993002046290256037}
   m_Layer: 6
   m_Name: Kiwi
   m_TagString: Untagged
@@ -66,19 +67,6 @@ CapsuleCollider:
   m_Height: 65
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-340447010044735182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4391720868551978585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 586eb1e2d8ce9994faa625b3b96b5fe7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnForce: 20
 --- !u!114 &1960810680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +97,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4231669f3526949a4b889196486fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-340447010044735182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4391720868551978585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586eb1e2d8ce9994faa625b3b96b5fe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnForce: 1.2
+--- !u!75 &-4993002046290256037
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4391720868551978585}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 9.5, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &8938332473339833738
 GameObject:
   m_ObjectHideFlags: 0

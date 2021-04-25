@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2844186044115677016}
   - component: {fileID: 2374009836896897343}
   - component: {fileID: 2374009836896897312}
-  - component: {fileID: 3184964745808786915}
   - component: {fileID: 1663413370}
   - component: {fileID: 1663413375}
+  - component: {fileID: 3184964745808786915}
+  - component: {fileID: -148691579341681073}
   m_Layer: 6
   m_Name: apple
   m_TagString: Untagged
@@ -66,19 +67,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 150
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3184964745808786915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184964745808786914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36ef71b4dd1791d4d8bc0615a1e77f2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnForce: 10
 --- !u!114 &1663413370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,11 +92,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSliceMaterial: {fileID: 2100000, guid: 074670deab480044bbb80d2c755c9268, type: 2}
-  asynchronously: 0
+  asynchronously: 1
   useLazyRunner: 0
   _sliceId: 0
   _lastSliceTime: -3.4028235e+38
   delayBetweenSlices: 1
+--- !u!114 &3184964745808786915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3184964745808786914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ef71b4dd1791d4d8bc0615a1e77f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnForce: 1.35
+--- !u!75 &-148691579341681073
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3184964745808786914}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 9.2, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &5061521011130024204
 GameObject:
   m_ObjectHideFlags: 0

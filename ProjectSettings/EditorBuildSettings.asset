@@ -4,7 +4,22 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/_MainMenu.unity
+    guid: 5f56dfddab1609742897c34696efae5d
+  - enabled: 1
+    path: Assets/Scenes/AirHockey.unity
+    guid: 49f334d5e0cb90c469b75a345e90a2c8
+  - enabled: 1
+    path: Assets/Scenes/DuckHand.unity
+    guid: fb2a40079cfd6de49a3f80229fac9fb6
+  - enabled: 1
+    path: Assets/Scenes/FruitNinja.unity
+    guid: 5062f330d3911bb41ae9b0a9f2fa66d9
+  - enabled: 1
+    path: Assets/Scenes/Mini_basketball.unity
+    guid: e0519a074f8997348826e706af6ed713
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bee6e82151b0a3646a591b82cfb45c21, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 849b33a9212d7684bbba5928d2a28a36, type: 2}

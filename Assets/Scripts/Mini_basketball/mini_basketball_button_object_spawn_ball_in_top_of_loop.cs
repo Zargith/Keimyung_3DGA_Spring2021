@@ -33,7 +33,7 @@ public class mini_basketball_button_object_spawn_ball_in_top_of_loop : MonoBehav
         newBall.tag = "basketball_ball_valid";
     }
     
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "player_hand") {
             buttonIsPushed = true;
