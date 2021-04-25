@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class DuckHandGameManager : MonoBehaviour
 {
     public Canvas PreGameCanvas;
+    public Canvas InGameCanvas;
 
     public GameObject EnemyPrefab;
 
 
     private bool m_isRunning = false;
+    private Stopwatch m_gameTime = new Stopwatch();
+
+    public System.TimeSpan GameTime { get => m_gameTime.Elapsed; }
 
     public void StartGame()
     {
-        PreGameCanvas.enabled = false;
+        PreGameCanvas.gameObject.SetActive(false);
+        InGameCanvas.gameObject.SetActive(true);
 
         m_isRunning = true;
+
+        m_gameTime.Restart();
     }
 
 
