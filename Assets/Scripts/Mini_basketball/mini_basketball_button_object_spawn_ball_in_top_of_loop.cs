@@ -10,6 +10,7 @@ public class mini_basketball_button_object_spawn_ball_in_top_of_loop : MonoBehav
     private double endPosition;
     public float movingSpeed = 0.25f;
     public GameObject prefabBall;
+    public Vector3 spawnPosition = new Vector3((float)4.8e-11, 2, 2.7f);
 
     void Start()
     {
@@ -29,7 +30,7 @@ public class mini_basketball_button_object_spawn_ball_in_top_of_loop : MonoBehav
     }
     void OnMouseDown() {
         buttonIsPushed = true;
-        GameObject newBall = Instantiate(prefabBall, new Vector3((float)4.8e-11, 2, 2.7f), Quaternion.identity);
+        GameObject newBall = Instantiate(prefabBall, spawnPosition, Quaternion.identity);
         newBall.tag = "basketball_ball_valid";
     }
     
@@ -37,7 +38,7 @@ public class mini_basketball_button_object_spawn_ball_in_top_of_loop : MonoBehav
     {
         if (other.gameObject.tag == "player_hand") {
             buttonIsPushed = true;
-            GameObject newBall = Instantiate(prefabBall, new Vector3((float)4.8e-11, 2, 2.7f), Quaternion.identity);
+            GameObject newBall = Instantiate(prefabBall, spawnPosition, Quaternion.identity);
             newBall.tag = "basketball_ball_valid";
         }
     }

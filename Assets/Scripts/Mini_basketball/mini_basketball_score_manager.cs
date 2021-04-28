@@ -15,11 +15,13 @@ public class mini_basketball_score_manager : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (manager.gameStarted && other.gameObject.tag == "basketball_ball_valid") {
+        if (other.gameObject.tag == "basketball_ball_valid") {
             other.gameObject.tag = "basketball_ball_invalid";
-            manager.score++;
+            if (manager.gameStarted) {
+                manager.score++;
+                scoreText.text = "Score: " + manager.score.ToString();
+            }
             audioSource.Play();
-            scoreText.text = "Score: " + manager.score.ToString();
         }
     }
 

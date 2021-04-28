@@ -238,3 +238,4 @@ MonoBehaviour:
   topPart: {fileID: 1021212678453835579}
   movingSpeed: 0.25
   prefabBall: {fileID: 7156339477623965620, guid: 5ab2f0de0324889499c0df2a4b4cc86d, type: 3}
+  spawnPosition: {x: 0, y: 0.8, z: 1.35}
