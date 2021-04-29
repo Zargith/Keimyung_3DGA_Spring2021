@@ -13,13 +13,15 @@ public class HandGun : MonoBehaviour
     public Transform ShootToward;
 
 
-    public bool EnableShootRayVisual = false;
     public bool EnableGunMesh = false;
 
     public static float ShootCooldownSeconds = 0.3f;
     public static float GunGestureThreshold = 0.2f;
     public static float PitchAccelerationShotThreshold = 10_000f;
     public static float ShotInitialImpulseForce = 100f;
+
+    public static float LazerRayLifetime = 0.5f;
+
 
     private static readonly List<string> kGunGesturesName = new List<string> { "Gun_0", "Gun_1" };
 
@@ -56,16 +58,6 @@ public class HandGun : MonoBehaviour
 
         if (EnableGunMesh)
             HandleGunMesh(isGunShape, shootRay);
-
-
-        if (EnableShootRayVisual)
-        {
-            GetComponent<LineRenderer>().enabled = true;
-            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
-            GetComponent<LineRenderer>().SetPosition(1, shootRay.origin + 10 * shootRay.direction);
-        }
-        else
-            GetComponent<LineRenderer>().enabled = false;
     }
 
     private void HandleGunMesh(bool isGunShape, Ray shootRay)
@@ -118,11 +110,7 @@ public class HandGun : MonoBehaviour
             && pitchAcceleration > PitchAccelerationShotThreshold
             && m_LastPlausibleShotDirection.HasValue)
         {
-            var ball = Instantiate(BulletPrefab, shootRay.origin, Quaternion.identity);
-            ball.GetComponent<Rigidbody>().AddForce(m_LastPlausibleShotDirection.Value.direction * ShotInitialImpulseForce, ForceMode.Impulse);
-
-            m_currentCd = ShootCooldownSeconds;
-            m_LastPlausibleShotDirection = null;
+            DoShoot();
         }
 
         m_lastPitch = pitch;
@@ -131,6 +119,30 @@ public class HandGun : MonoBehaviour
         return shootRay;
     }
 
+    private void DoShoot()
+    {
+        Ray shootRay = m_LastPlausibleShotDirection.Value;
+
+        var ball = Instantiate(BulletPrefab, shootRay.origin, Quaternion.identity);
+        ball.GetComponent<Rigidbody>().AddForce(shootRay.direction * ShotInitialImpulseForce, ForceMode.Impulse);
+
+        RaycastHit rayCast;
+        Physics.Raycast(shootRay, out rayCast);
+
+        GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
+        GetComponent<LineRenderer>().SetPosition(1, rayCast.point != Vector3.zero ? rayCast.point : shootRay.origin + shootRay.direction * 9999);
+        GetComponent<LineRenderer>().enabled = true;
+
+        Invoke(nameof(HideLazer), LazerRayLifetime);
+
+        m_currentCd = ShootCooldownSeconds;
+        m_LastPlausibleShotDirection = null;
+    }
+
+    void HideLazer()
+    {
+        GetComponent<LineRenderer>().enabled = false;
+    }
 
     /// <summary>
     /// How close the hand gesture looks like a gun
