@@ -10,6 +10,8 @@ public class HandGun : MonoBehaviour
     public GameObject GunPrefab;
     public GameObject OVRHand;
     public GestureProcessor GestureProcessor;
+    public Transform ShootToward;
+
 
     public bool EnableShootRayVisual = false;
     public bool EnableGunMesh = false;
@@ -17,7 +19,7 @@ public class HandGun : MonoBehaviour
     public static float ShootCooldownSeconds = 0.3f;
     public static float GunGestureThreshold = 0.2f;
     public static float PitchAccelerationShotThreshold = 10_000f;
-    public static float ShotInitialImpulseForce = 10f;
+    public static float ShotInitialImpulseForce = 100f;
 
     private static readonly List<string> kGunGesturesName = new List<string> { "Gun_0", "Gun_1" };
 
@@ -87,11 +89,14 @@ public class HandGun : MonoBehaviour
         if (EnableGunMesh) // Gun does not yet match correct position
         {
             // Gun/hand switch
-            if (gunGestureCorrespondance > GunGestureThreshold && gunInstance == null)
+            if (gunGestureCorrespondance > GunGestureThreshold)
             {
-                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
-                OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
-                gunInstance = Instantiate(GunPrefab, transform);
+                if (gunInstance == null)
+                {
+                    OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
+                    OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
+                    gunInstance = Instantiate(GunPrefab, transform);
+                }
 
                 gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
             }
@@ -103,7 +108,6 @@ public class HandGun : MonoBehaviour
                 OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
             }
         }
-
 
 
         if (EnableShootRayVisual)
@@ -141,21 +145,32 @@ public class HandGun : MonoBehaviour
 
     Vector3 GetUpDirection()
     {
-        return -transform.forward;
+        if (Hand == Hand.Right)
+            return -transform.forward;
+        else
+            return transform.forward;
     }
 
     Ray GetShootingRay()
     {
-        var origin = transform.position;
+        var result = new Ray
+        {
+            origin = transform.position,
+            direction = (ShootToward.position - transform.position).normalized
+        };
+
 
         var skeleton = OVRHand.GetComponent<OVRSkeleton>();
         if (skeleton.Bones != null && skeleton.Bones.Any())
-            origin = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_Index1].Transform.position;
-
-        return new Ray
         {
-            origin = origin,
-            direction = (Hand == Hand.Right ? -transform.right : transform.right)
-        };
+            var indexBase = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+            var indexTip = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+
+            result.origin = indexBase;
+            result.origin = indexBase;
+            result.direction = Vector3.Lerp(result.direction, (indexTip - indexBase).normalized, 0.5f);
+        }
+
+        return result;
     }
 }
