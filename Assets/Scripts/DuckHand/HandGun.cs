@@ -6,7 +6,6 @@ using UnityEngine;
 public class HandGun : MonoBehaviour
 {
     public Hand Hand = Hand.Right;
-    public GameObject BulletPrefab;
     public GameObject GunPrefab;
     public GameObject OVRHand;
     public GestureProcessor GestureProcessor;
@@ -123,17 +122,22 @@ public class HandGun : MonoBehaviour
     {
         Ray shootRay = m_LastPlausibleShotDirection.Value;
 
-        var ball = Instantiate(BulletPrefab, shootRay.origin, Quaternion.identity);
-        ball.GetComponent<Rigidbody>().AddForce(shootRay.direction * ShotInitialImpulseForce, ForceMode.Impulse);
+        RaycastHit shootRC;
+        var didHit = Physics.Raycast(shootRay, out shootRC);
 
-        RaycastHit rayCast;
-        Physics.Raycast(shootRay, out rayCast);
+        { // Visual lazer
+            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
+            GetComponent<LineRenderer>().SetPosition(1, didHit ? shootRC.point : shootRay.origin + shootRay.direction * 9999);
+            GetComponent<LineRenderer>().enabled = true;
 
-        GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
-        GetComponent<LineRenderer>().SetPosition(1, rayCast.point != Vector3.zero ? rayCast.point : shootRay.origin + shootRay.direction * 9999);
-        GetComponent<LineRenderer>().enabled = true;
+            Invoke(nameof(HideLazer), LazerRayLifetime);
+        }
 
-        Invoke(nameof(HideLazer), LazerRayLifetime);
+        { // Enemy destroy
+            if (didHit)
+                shootRC.collider.GetComponent<Shootable>()?.OnHit();
+        }
+
 
         m_currentCd = ShootCooldownSeconds;
         m_LastPlausibleShotDirection = null;
