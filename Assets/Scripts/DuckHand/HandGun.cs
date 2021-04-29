@@ -133,6 +133,10 @@ public class HandGun : MonoBehaviour
             Invoke(nameof(HideLazer), LazerRayLifetime);
         }
 
+        { // Sound effect
+            GetComponent<AudioSource>().Play();
+        }
+
         { // Enemy destroy
             if (didHit)
                 shootRC.collider.GetComponent<Shootable>()?.OnHit();
