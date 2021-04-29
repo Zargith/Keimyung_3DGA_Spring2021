@@ -43,15 +43,59 @@ public class HandGun : MonoBehaviour
         m_lastPitch = GetCurrentPitch();
         m_lastPitchSpeed = 0;
         m_lastShootingRay = GetShootingRay();
-
-        Debug.Log("NEW SIMULATION ########################################################################################");
     }
 
     void FixedUpdate()
     {
-        var gunGestureCorrespondance = GetCurrentGunGestureCorrespondance();
+        var isGunShape = GetCurrentGunGestureCorrespondance() > GunGestureThreshold;
 
         var shootRay = GetShootingRay();
+
+        shootRay = HandleShootTrigger(isGunShape, shootRay);
+
+
+        if (EnableGunMesh)
+            HandleGunMesh(isGunShape, shootRay);
+
+
+        if (EnableShootRayVisual)
+        {
+            GetComponent<LineRenderer>().enabled = true;
+            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
+            GetComponent<LineRenderer>().SetPosition(1, shootRay.origin + 10 * shootRay.direction);
+        }
+        else
+            GetComponent<LineRenderer>().enabled = false;
+    }
+
+    private void HandleGunMesh(bool isGunShape, Ray shootRay)
+    {
+        // Gun spawn
+        if (isGunShape && gunInstance == null)
+        {
+            OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
+            gunInstance = Instantiate(GunPrefab, transform);
+        }
+
+
+        // Gun update (also on 1rst tick)
+        if (isGunShape)
+            gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
+
+
+        // Gun destroy
+        if (!isGunShape && gunInstance != null)
+        {
+            Destroy(gunInstance);
+            gunInstance = null;
+            OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = true;
+            OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
+        }
+    }
+
+    private Ray HandleShootTrigger(bool isGunShape, Ray shootRay)
+    {
         var pitch = GetCurrentPitch();
         var pitchSpeed = (pitch - m_lastPitch) / Time.deltaTime;
         var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / Time.deltaTime;
@@ -70,7 +114,7 @@ public class HandGun : MonoBehaviour
         {
             m_currentCd -= Time.deltaTime;
         }
-        else if (gunGestureCorrespondance > GunGestureThreshold
+        else if (isGunShape
             && pitchAcceleration > PitchAccelerationShotThreshold
             && m_LastPlausibleShotDirection.HasValue)
         {
@@ -84,40 +128,7 @@ public class HandGun : MonoBehaviour
         m_lastPitch = pitch;
         m_lastPitchSpeed = pitchSpeed;
         m_lastShootingRay = GetShootingRay();
-
-
-        if (EnableGunMesh) // Gun does not yet match correct position
-        {
-            // Gun/hand switch
-            if (gunGestureCorrespondance > GunGestureThreshold)
-            {
-                if (gunInstance == null)
-                {
-                    OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
-                    OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
-                    gunInstance = Instantiate(GunPrefab, transform);
-                }
-
-                gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
-            }
-            if (gunGestureCorrespondance < GunGestureThreshold && gunInstance != null)
-            {
-                Destroy(gunInstance);
-                gunInstance = null;
-                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = true;
-                OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
-            }
-        }
-
-
-        if (EnableShootRayVisual)
-        {
-            GetComponent<LineRenderer>().enabled = true;
-            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
-            GetComponent<LineRenderer>().SetPosition(1, shootRay.origin + 10 * shootRay.direction);
-        }
-        else
-            GetComponent<LineRenderer>().enabled = false;
+        return shootRay;
     }
 
 
