@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Launchable : MonoBehaviour
 {
-    protected ScoreManager man;
+    protected ScoreManagerFruit man;
 
     private void Start()
     {
-        man = FindObjectOfType<ScoreManager>();
+        man = FindObjectOfType<ScoreManagerFruit>();
     }
 
     virtual public void Launch(Vector3 beg, Vector3 end)
