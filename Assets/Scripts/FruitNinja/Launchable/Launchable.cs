@@ -2,8 +2,23 @@ using UnityEngine;
 
 public class Launchable : MonoBehaviour
 {
+    protected ScoreManager man;
+
+    private void Start()
+    {
+        man = FindObjectOfType<ScoreManager>();
+    }
+
     virtual public void Launch(Vector3 beg, Vector3 end)
     {
+    }
+
+    public void yolo(int id)
+    {
+        if (gameObject.GetInstanceID().Equals(id))
+        {
+            man.addToScore(1000);
+        }
     }
 }
 

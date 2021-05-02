@@ -5,11 +5,17 @@ public class Banana : Launchable
     [SerializeField] float _spawnForce;
     Rigidbody rb;
 
-
-    private void OnEnable()
+    protected void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
+        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced += yolo;
     }
+
+    protected void OnDisable()
+    {
+        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced -= yolo;
+    }
+
 
     override public void Launch(Vector3 beg, Vector3 end)
     {

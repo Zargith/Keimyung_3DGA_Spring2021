@@ -9,6 +9,9 @@ namespace BzKovSoft.ObjectSlicer.Samples
 	/// </summary>
 	public class ObjectSlicerSample : BzSliceableObjectBase, IBzSliceableNoRepeat
 	{
+		public delegate void SlicedAction(int id);
+		public static event SlicedAction OnSliced;
+
 		[HideInInspector]
 		[SerializeField]
 		int _sliceId;
@@ -80,6 +83,7 @@ namespace BzKovSoft.ObjectSlicer.Samples
 			if (!result.sliced)
 				return;
 
+			OnSliced?.Invoke(this.gameObject.GetInstanceID());
 			// on sliced, get data that we saved in 'PrepareData' method
 			var addData = (ResultData)result.addData;
 			addData.stopwatch.Stop();

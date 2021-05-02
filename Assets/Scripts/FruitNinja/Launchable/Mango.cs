@@ -8,12 +8,18 @@ public class Mango : Launchable
     Rigidbody rb;
     GameObject player;
 
-
-    private void OnEnable()
+    protected void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player"); 
+        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced += yolo;
     }
+
+    protected void OnDisable()
+    {
+        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced -= yolo;
+    }
+
 
     override public void Launch(Vector3 beg, Vector3 end)
     {
