@@ -33,6 +33,10 @@ public class DuckHandGameManager : MonoBehaviour
             return;
 
         if (Random.Range(0f, 1f) < Time.deltaTime)
-            Instantiate(EnemyPrefab, new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(-3f, 3f)), Quaternion.identity);
+        {
+            var duck = Instantiate(EnemyPrefab, new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(-3f, 3f)), Quaternion.identity);
+
+            duck.transform.LookAt(GameObject.FindGameObjectWithTag("MainCamera").transform);
+        }
     }
 }

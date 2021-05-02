@@ -8,6 +8,10 @@ TagManager:
   - basketball_ball_invalid
   - player_hand
   - bullet
+  - AirHockey_Corner
+  - AirHockey_Paddle
+  - AirHockey_Side
+  - AirHockey_Goal
   layers:
   - Default
   - TransparentFX

@@ -6,25 +6,27 @@ using UnityEngine;
 public class HandGun : MonoBehaviour
 {
     public Hand Hand = Hand.Right;
-    public GameObject BulletPrefab;
     public GameObject GunPrefab;
     public GameObject OVRHand;
+    public GestureProcessor GestureProcessor;
+    public Transform ShootToward;
 
-    public bool EnableShootRayVisual = false;
+
     public bool EnableGunMesh = false;
 
     public static float ShootCooldownSeconds = 0.3f;
     public static float GunGestureThreshold = 0.2f;
     public static float PitchAccelerationShotThreshold = 10_000f;
-    public static float ShotInitialImpulseForce = 10f;
+    public static float ShotInitialImpulseForce = 100f;
+
+    public static float LazerRayLifetime = 0.5f;
+
 
     private static readonly List<string> kGunGesturesName = new List<string> { "Gun_0", "Gun_1" };
 
     private float m_lastPitch; // degree
     private float m_lastPitchSpeed; // degree per second
     private float m_currentCd = 0f;
-
-    private GestureProcessor m_gp;
 
     private Ray m_lastShootingRay;
     private Ray? m_LastPlausibleShotDirection;
@@ -42,17 +44,49 @@ public class HandGun : MonoBehaviour
         m_lastPitch = GetCurrentPitch();
         m_lastPitchSpeed = 0;
         m_lastShootingRay = GetShootingRay();
-
-        m_gp = FindObjectOfType<GestureProcessor>();
-
-        Debug.Log("NEW SIMULATION ########################################################################################");
     }
 
     void FixedUpdate()
     {
-        var gunGestureCorrespondance = GetCurrentGunGestureCorrespondance();
+        var isGunShape = GetCurrentGunGestureCorrespondance() > GunGestureThreshold;
 
         var shootRay = GetShootingRay();
+
+        shootRay = HandleShootTrigger(isGunShape, shootRay);
+
+
+        if (EnableGunMesh)
+            HandleGunMesh(isGunShape, shootRay);
+    }
+
+    private void HandleGunMesh(bool isGunShape, Ray shootRay)
+    {
+        // Gun spawn
+        if (isGunShape && gunInstance == null)
+        {
+            OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
+            gunInstance = Instantiate(GunPrefab, transform);
+        }
+
+
+        // Gun update (also on 1rst tick)
+        if (isGunShape)
+            gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
+
+
+        // Gun destroy
+        if (!isGunShape && gunInstance != null)
+        {
+            Destroy(gunInstance);
+            gunInstance = null;
+            OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = true;
+            OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
+        }
+    }
+
+    private Ray HandleShootTrigger(bool isGunShape, Ray shootRay)
+    {
         var pitch = GetCurrentPitch();
         var pitchSpeed = (pitch - m_lastPitch) / Time.deltaTime;
         var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / Time.deltaTime;
@@ -71,54 +105,52 @@ public class HandGun : MonoBehaviour
         {
             m_currentCd -= Time.deltaTime;
         }
-        else if (gunGestureCorrespondance > GunGestureThreshold
+        else if (isGunShape
             && pitchAcceleration > PitchAccelerationShotThreshold
             && m_LastPlausibleShotDirection.HasValue)
         {
-            var ball = Instantiate(BulletPrefab, shootRay.origin, Quaternion.identity);
-            ball.GetComponent<Rigidbody>().AddForce(m_LastPlausibleShotDirection.Value.direction * ShotInitialImpulseForce, ForceMode.Impulse);
-
-            m_currentCd = ShootCooldownSeconds;
-            m_LastPlausibleShotDirection = null;
+            DoShoot();
         }
 
         m_lastPitch = pitch;
         m_lastPitchSpeed = pitchSpeed;
         m_lastShootingRay = GetShootingRay();
-
-
-        if (EnableGunMesh) // Gun does not yet match correct position
-        {
-            // Gun/hand switch
-            if (gunGestureCorrespondance > GunGestureThreshold && gunInstance == null)
-            {
-                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = false;
-                OVRHand.GetComponent<OVRMeshRenderer>().enabled = false;
-                gunInstance = Instantiate(GunPrefab, transform);
-
-                gunInstance.GetComponent<TransformRayMatcher>().PositionToMatchRay(shootRay, GetUpDirection());
-            }
-            if (gunGestureCorrespondance < GunGestureThreshold && gunInstance != null)
-            {
-                Destroy(gunInstance);
-                gunInstance = null;
-                OVRHand.GetComponent<SkinnedMeshRenderer>().enabled = true;
-                OVRHand.GetComponent<OVRMeshRenderer>().enabled = true;
-            }
-        }
-
-
-
-        if (EnableShootRayVisual)
-        {
-            GetComponent<LineRenderer>().enabled = true;
-            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
-            GetComponent<LineRenderer>().SetPosition(1, shootRay.origin + 10 * shootRay.direction);
-        }
-        else
-            GetComponent<LineRenderer>().enabled = false;
+        return shootRay;
     }
 
+    private void DoShoot()
+    {
+        Ray shootRay = m_LastPlausibleShotDirection.Value;
+
+        RaycastHit shootRC;
+        var didHit = Physics.Raycast(shootRay, out shootRC);
+
+        { // Visual lazer
+            GetComponent<LineRenderer>().SetPosition(0, shootRay.origin);
+            GetComponent<LineRenderer>().SetPosition(1, didHit ? shootRC.point : shootRay.origin + shootRay.direction * 9999);
+            GetComponent<LineRenderer>().enabled = true;
+
+            Invoke(nameof(HideLazer), LazerRayLifetime);
+        }
+
+        { // Sound effect
+            GetComponent<AudioSource>().Play();
+        }
+
+        { // Enemy destroy
+            if (didHit)
+                shootRC.collider.GetComponent<Shootable>()?.OnHit();
+        }
+
+
+        m_currentCd = ShootCooldownSeconds;
+        m_LastPlausibleShotDirection = null;
+    }
+
+    void HideLazer()
+    {
+        GetComponent<LineRenderer>().enabled = false;
+    }
 
     /// <summary>
     /// How close the hand gesture looks like a gun
@@ -126,7 +158,7 @@ public class HandGun : MonoBehaviour
     /// <returns>[0, 1], the higher the better</returns>
     float GetCurrentGunGestureCorrespondance()
     {
-        return kGunGesturesName.Max(gesture => m_gp.CompareGesture(Hand, gesture));
+        return kGunGesturesName.Max(gesture => GestureProcessor.CompareGesture(Hand, gesture));
     }
 
     /// <summary>
@@ -144,21 +176,32 @@ public class HandGun : MonoBehaviour
 
     Vector3 GetUpDirection()
     {
-        return -transform.forward;
+        if (Hand == Hand.Right)
+            return -transform.forward;
+        else
+            return transform.forward;
     }
 
     Ray GetShootingRay()
     {
-        var origin = transform.position;
+        var result = new Ray
+        {
+            origin = transform.position,
+            direction = (ShootToward.position - transform.position).normalized
+        };
+
 
         var skeleton = OVRHand.GetComponent<OVRSkeleton>();
         if (skeleton.Bones != null && skeleton.Bones.Any())
-            origin = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_Index1].Transform.position;
-
-        return new Ray
         {
-            origin = origin,
-            direction = (Hand == Hand.Right ? -transform.right : transform.right)
-        };
+            var indexBase = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+            var indexTip = OVRHand.GetComponent<OVRSkeleton>().Bones[(int)OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+
+            result.origin = indexBase;
+            result.origin = indexBase;
+            result.direction = Vector3.Lerp(result.direction, (indexTip - indexBase).normalized, 0.5f);
+        }
+
+        return result;
     }
 }
