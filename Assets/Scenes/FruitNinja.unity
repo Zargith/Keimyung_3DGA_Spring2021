@@ -1082,6 +1082,6 @@ MonoBehaviour:
   _spawnContainer: {fileID: 8139765618066781512}
   _spawnZoneOrigin: {fileID: 8139765618066781511}
   _spawnZoneEnd: {fileID: 8139765618066781510}
-  _bomb: {fileID: 3184964745808786914, guid: 76c8281698fcdf04c9bcefc2bcc53557, type: 3}
+  _bomb: {fileID: 7226612891455983871, guid: 34a12f6147b25534ab8d33fdc904336a, type: 3}
   _intervalMin: 10
   _stop: 0
