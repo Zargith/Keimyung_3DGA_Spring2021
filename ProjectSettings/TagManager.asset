@@ -12,6 +12,7 @@ TagManager:
   - AirHockey_Paddle
   - AirHockey_Side
   - AirHockey_Goal
+  - Launchable
   layers:
   - Default
   - TransparentFX

@@ -7,7 +7,14 @@ public class DestroyOnTouch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        if (other.transform.parent)
+        {
+            Destroy(other.transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(other.gameObject);
+        }
 
     }
 }

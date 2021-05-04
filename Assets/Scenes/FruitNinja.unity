@@ -137,11 +137,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 195580343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d23b366537b31b54197288f122deabeb, type: 3}
+  m_Script: {fileID: 11500000, guid: 28fe17ce4227e61479763d5bd29f73e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {x: 0, y: -1, z: 0}
-  _direction: {x: 0, y: 1, z: 0}
 --- !u!65 &195580352
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -169,11 +167,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 246359595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d23b366537b31b54197288f122deabeb, type: 3}
+  m_Script: {fileID: 11500000, guid: 28fe17ce4227e61479763d5bd29f73e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {x: 0, y: -1, z: 0}
-  _direction: {x: 0, y: 1, z: 0}
 --- !u!65 &246359604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -988,6 +984,10 @@ PrefabInstance:
     - target: {fileID: 8139765619678883542, guid: dffed77c3b886ea42b41a544b7a29d37, type: 3}
       propertyPath: _roundTime
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139765619678883542, guid: dffed77c3b886ea42b41a544b7a29d37, type: 3}
+      propertyPath: _intervalMin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8139765619678883543, guid: dffed77c3b886ea42b41a544b7a29d37, type: 3}
       propertyPath: m_RootOrder

@@ -5,19 +5,11 @@ using UnityEngine;
 public class Mango : Launchable
 {
     [SerializeField] float _spawnForce;
-    Rigidbody rb;
     GameObject player;
 
     protected void OnEnable()
     {
-        rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player"); 
-        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced += yolo;
-    }
-
-    protected void OnDisable()
-    {
-        BzKovSoft.ObjectSlicer.Samples.ObjectSlicerSample.OnSliced -= yolo;
     }
 
 
@@ -25,7 +17,7 @@ public class Mango : Launchable
     {
         transform.position = new Vector3(Random.Range(beg.x, end.x), end.y / 2, Random.Range(beg.z, end.z));
         Vector3 dir = (player.transform.position - transform.position) + Vector3.up * 10;
-        rb.AddForce(dir.normalized * _spawnForce, ForceMode.Impulse);
-        rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 10), ForceMode.Impulse);
+        _main.AddForce(dir.normalized * _spawnForce, ForceMode.Impulse);
+        _main.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 10), ForceMode.Impulse);
     }
 }
