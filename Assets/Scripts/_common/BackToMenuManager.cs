@@ -66,7 +66,6 @@ public class BackToMenuManager : MonoBehaviour
     private bool IsDoingJulSign()
     {
         var handDistance = Vector3.Distance(m_leftHand.transform.position, m_rightHand.transform.position);
-        Debug.Log("Hand distance : " + handDistance);
 
         if (m_areHandTogether)
         {
