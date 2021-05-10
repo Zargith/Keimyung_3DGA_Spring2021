@@ -69,7 +69,7 @@ public class DuckHandGameManager : MonoBehaviour
         if (!m_isRunning)
             return;
 
-        if (Random.Range(0f, 5f) < Time.deltaTime)
+        if (Random.Range(0f, 3f) < Time.deltaTime)
         {
             var duck = Instantiate(EnemyPrefab, new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(5f, 10f)), Quaternion.identity, m_levelScroller.transform);
 
