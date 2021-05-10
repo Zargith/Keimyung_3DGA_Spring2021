@@ -77,4 +77,5 @@ public class DuckHandGameManager : MonoBehaviour
             //duck.transform.LookAt(GameObject.FindGameObjectWithTag("MainCamera").transform);
         }
     }
+    
 }
