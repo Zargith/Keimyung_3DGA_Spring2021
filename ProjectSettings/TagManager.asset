@@ -7,8 +7,12 @@ TagManager:
   - basketball_ball_valid
   - basketball_ball_invalid
   - player_hand
-  - snake
-  - apple
+  - bullet
+  - AirHockey_Corner
+  - AirHockey_Paddle
+  - AirHockey_Side
+  - AirHockey_Goal
+  - Launchable
   layers:
   - Default
   - TransparentFX

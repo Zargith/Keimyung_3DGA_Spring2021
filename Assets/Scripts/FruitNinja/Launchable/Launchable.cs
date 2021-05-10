@@ -2,8 +2,43 @@ using UnityEngine;
 
 public class Launchable : MonoBehaviour
 {
+    [SerializeField] protected Rigidbody _main;
+    [SerializeField] protected Rigidbody _cut1;
+    [SerializeField] protected Rigidbody _cut2;
+    protected ScoreManagerFruit man;
+    bool cuted = false;
+
+    private void Start()
+    {
+        man = FindObjectOfType<ScoreManagerFruit>();
+    }
+
     virtual public void Launch(Vector3 beg, Vector3 end)
     {
+    }
+
+    public void Cut()
+    {
+        if (cuted)
+            return;
+        cuted = true;
+        //activate & setPosition
+        _main.gameObject.SetActive(false);
+        _cut1.gameObject.SetActive(true);
+        _cut2.gameObject.SetActive(true);
+        _cut1.transform.localPosition = _main.transform.localPosition;
+        _cut2.transform.localPosition = _main.transform.localPosition;
+
+        //forces
+        _cut1.AddForce(Vector3.left * 5, ForceMode.Impulse);
+        _cut1.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 5), ForceMode.Impulse);
+        _cut2.AddForce(Vector3.right * 5, ForceMode.Impulse);
+        _cut2.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 5), ForceMode.Impulse);
+    }
+
+    public void yolo()
+    {
+        man.addToScore(1000);
     }
 }
 

@@ -6,35 +6,27 @@ public class Puck : MonoBehaviour
 {
     Rigidbody r;
 
-    Vector3 direction = Vector3.zero;
-
-    // Start is called before the first frame update
+    //// Start is called before the first frame update
     void Start()
     {
         r = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Stop()
     {
-        transform.position += direction;
+        r.velocity = Vector3.zero;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Paddle")
+        if (other.name == "SouthGoal")
         {
-            Debug.Log("Paddle");
-            Vector3 velocity = transform.gameObject.GetComponent<Rigidbody>().velocity;
-
-            //direction += velocity * 0.5F * Time.deltaTime;
-            direction = Vector3.Reflect(direction + velocity * 0.3F * Time.deltaTime, collision.contacts[0].normal);
-        }
-        else if (collision.gameObject.tag == "Side")
+            Debug.Log("SouthGoal");
+            GameObject.Find("ScorePanel").GetComponent<ScoreManager>().AddScore(Player.Which.AI);
+       } else if (other.name == "NorthGoal")
         {
-            Debug.Log("Side");
-            direction = Vector3.Reflect(direction, collision.contacts[0].normal);
-            //direction *= 0.8F;
+           Debug.Log("NorthGoal");
+            GameObject.Find("ScorePanel").GetComponent<ScoreManager>().AddScore(Player.Which.PLAYER);
         }
     }
 }

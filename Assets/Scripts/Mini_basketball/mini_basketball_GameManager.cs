@@ -17,17 +17,26 @@ public class mini_basketball_GameManager : MonoBehaviour
     {
         if (ballsSpawner != null)
             Object.Destroy(ballsSpawner);
+        destroyAllBallsWithTag("basketball_ball_valid");
+        destroyAllBallsWithTag("basketball_ball_invalid");
         gameStarted = true;
         score = 0;
         timer.seconds = 30;
         scoreManager.resetText();
         ballsSpawner = Instantiate(prefabBallsSpawner);
-        instanciateNewBall(new Vector3(0f, 0.7f, 1.4f));
-        instanciateNewBall(new Vector3(0.3f, 0.7f, 1.4f));
-        instanciateNewBall(new Vector3(-0.3f, 0.7f, 1.4f));
+        instanciateNewBall(new Vector3(0f, 0.8f, 1.25f));
+        instanciateNewBall(new Vector3(0.3f, 0.8f, 1.25f));
+        instanciateNewBall(new Vector3(-0.3f, 0.8f, 1.25f));
     }
 
-    private void instanciateNewBall(Vector3 position)
+    void destroyAllBallsWithTag(string tag)
+    {
+        var balls = GameObject.FindGameObjectsWithTag(tag);
+        for (int i = 0; i < balls.Length; i++)
+            Object.Destroy(balls[i]);
+    }
+
+    void instanciateNewBall(Vector3 position)
     {
         GameObject newBall = Instantiate(prefabBall, position, Quaternion.identity);
         newBall.tag = "basketball_ball_valid";

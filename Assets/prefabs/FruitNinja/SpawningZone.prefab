@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7999322670507424525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8649462406090346799}
+  m_Layer: 0
+  m_Name: spawnContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8649462406090346799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999322670507424525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_Children: []
+  m_Father: {fileID: 8139765619678883543}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8139765618689492565
 GameObject:
   m_ObjectHideFlags: 0
@@ -24,8 +54,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8139765618689492565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.21, y: 1.16, z: -0.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1, y: 0.1, z: 0.15}
+  m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_Children:
   - {fileID: 8139765619180754024}
   m_Father: {fileID: 8139765619678883543}
@@ -55,7 +85,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8139765619180754031}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.0199995, y: 11.690001, z: 7.68}
+  m_LocalPosition: {x: 2, y: 2, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8139765618689492566}
@@ -89,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8139765619675638423}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 8139765619678883543}
@@ -182,7 +212,7 @@ GameObject:
   - component: {fileID: 8139765619678883542}
   m_Layer: 0
   m_Name: SpawningZone
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,6 +230,7 @@ Transform:
   m_Children:
   - {fileID: 8139765618689492566}
   - {fileID: 8139765619675638416}
+  - {fileID: 8649462406090346799}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -215,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f953b6781ffe646b45d4c7e9c80ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnContainer: {fileID: 8649462406090346799}
   _spawnZoneOrigin: {fileID: 8139765618689492566}
   _spawnZoneEnd: {fileID: 8139765619180754024}
   _spawnable:
@@ -226,6 +258,5 @@ MonoBehaviour:
   - {fileID: 3092123496345768363, guid: 799cb86bea103a74fb5eea967627addf, type: 3}
   - {fileID: 790498046326573997, guid: 5e98a1f4b171e354ea0809bc5c2c99c6, type: 3}
   _intervalMin: 0.74
-  _intervalVariationMax: 0
-  _spawnForce: 20
   _stop: 0
+  _roundTime: 60
