@@ -9,5 +9,6 @@ public class Shootable : MonoBehaviour
     {
         Destroy(this.gameObject);
         // TODO: play chicken sound
+        FindObjectOfType<DuckHandGameManager>().OnEnemyKill();
     }
 }

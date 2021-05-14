@@ -27,11 +27,14 @@ public class HandGun : MonoBehaviour
     private float m_lastPitch; // degree
     private float m_lastPitchSpeed; // degree per second
     private float m_currentCd = 0f;
+    private bool m_isGunShape = false;
 
     private Ray m_lastShootingRay;
     private Ray? m_LastPlausibleShotDirection;
 
     private GameObject gunInstance;
+
+    private float lastPitchAccel;
 
     private void OnDrawGizmosSelected()
     {
@@ -46,17 +49,17 @@ public class HandGun : MonoBehaviour
         m_lastShootingRay = GetShootingRay();
     }
 
-    void FixedUpdate()
+
+    private void Update()
     {
-        var isGunShape = GetCurrentGunGestureCorrespondance() > GunGestureThreshold;
+        m_isGunShape = GetCurrentGunGestureCorrespondance() > GunGestureThreshold;
 
         var shootRay = GetShootingRay();
 
-        shootRay = HandleShootTrigger(isGunShape, shootRay);
-
+        shootRay = HandleShootTrigger(m_isGunShape, shootRay, Time.deltaTime);
 
         if (EnableGunMesh)
-            HandleGunMesh(isGunShape, shootRay);
+            HandleGunMesh(m_isGunShape, shootRay);
     }
 
     private void HandleGunMesh(bool isGunShape, Ray shootRay)
@@ -85,11 +88,12 @@ public class HandGun : MonoBehaviour
         }
     }
 
-    private Ray HandleShootTrigger(bool isGunShape, Ray shootRay)
+    private Ray HandleShootTrigger(bool isGunShape, Ray shootRay, float deltatime)
     {
         var pitch = GetCurrentPitch();
-        var pitchSpeed = (pitch - m_lastPitch) / Time.deltaTime;
-        var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / Time.deltaTime;
+        var pitchSpeed = (pitch - m_lastPitch) / deltatime;
+        var pitchAcceleration = (pitchSpeed - m_lastPitchSpeed) / deltatime;
+        lastPitchAccel = pitchAcceleration;
 
         if (pitchSpeed > 0 && m_lastPitchSpeed < 0)
         {
@@ -101,9 +105,10 @@ public class HandGun : MonoBehaviour
             );
         }
 
+
         if (m_currentCd > 0)
         {
-            m_currentCd -= Time.deltaTime;
+            m_currentCd -= deltatime;
         }
         else if (isGunShape
             && pitchAcceleration > PitchAccelerationShotThreshold
