@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class UpdateScore : MonoBehaviour
 {
-    [SerializeField] Text text;
+    Text text;
     ScoreManagerFruit man;
 
 
     private void Start()
     {
         man = FindObjectOfType<ScoreManagerFruit>();
+        text = GetComponent<Text>();
     }
 
     void Update()
