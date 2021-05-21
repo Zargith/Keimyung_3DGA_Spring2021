@@ -11,7 +11,7 @@ public class SpawnBombs : MonoBehaviour
     [SerializeField] [Range(10, 30)] float _intervalMin;
     public bool _stop = false;
 
-    void Start()
+    void OnEnable()
     {
         Time.timeScale = 0.75f;
         Invoke("randomSpawn", 5 + _intervalMin);

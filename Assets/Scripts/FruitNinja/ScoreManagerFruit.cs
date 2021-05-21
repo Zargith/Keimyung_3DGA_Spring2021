@@ -12,4 +12,9 @@ public class ScoreManagerFruit : MonoBehaviour
         score += val;
         print(score);
     }
+
+    public void reset()
+    {
+        score = 0;
+    }
 }

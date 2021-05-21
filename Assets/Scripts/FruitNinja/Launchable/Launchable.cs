@@ -7,6 +7,7 @@ public class Launchable : MonoBehaviour
     [SerializeField] protected Rigidbody _cut2;
     protected ScoreManagerFruit man;
     bool cuted = false;
+    float cutForce = 1.5f;
 
     private void Start()
     {
@@ -30,9 +31,9 @@ public class Launchable : MonoBehaviour
         _cut2.transform.localPosition = _main.transform.localPosition;
 
         //forces
-        _cut1.AddForce(Vector3.left * 5, ForceMode.Impulse);
+        _cut1.AddForce(Vector3.left * cutForce, ForceMode.Impulse);
         _cut1.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 5), ForceMode.Impulse);
-        _cut2.AddForce(Vector3.right * 5, ForceMode.Impulse);
+        _cut2.AddForce(Vector3.right * cutForce, ForceMode.Impulse);
         _cut2.AddTorque(new Vector3(Random.value, Random.value, Random.value) * Random.Range(1, 5), ForceMode.Impulse);
     }
 

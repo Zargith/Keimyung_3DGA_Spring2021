@@ -305,10 +305,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 546339297436357380, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 546339298144162405, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -357,17 +353,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewArcadeRoomGameObject
       objectReference: {fileID: 0}
-    - target: {fileID: 546339298144162426, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5578880169859284971, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6108044317859718867, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
-      propertyPath: m_Material
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 841e75a6ff4f1394fa9a3373ad6031df, type: 3}
@@ -922,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.03
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7989326251329111453, guid: 376856ec9f26b354c9caa823bfc8cc51, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1625,7 +1613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3261630981013329341, guid: 71da1113f8b61a84e8ad5b316d33f30d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.224
+      value: 1.391
       objectReference: {fileID: 0}
     - target: {fileID: 3261630981013329341, guid: 71da1113f8b61a84e8ad5b316d33f30d, type: 3}
       propertyPath: m_LocalPosition.z
