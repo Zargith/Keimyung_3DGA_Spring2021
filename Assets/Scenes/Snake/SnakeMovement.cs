@@ -93,23 +93,21 @@ public class SnakeMovement : MonoBehaviour
         firstPlane = true;
     }
 
+    bool isRotating = false;
+
     public void Move()
     {
-        BodyParts[0].Translate(BodyParts[0].up
-                * speed * Time.smoothDeltaTime, Space.World);
-        if (Input.GetAxis("Horizontal") != 0) {
-            // Change dir
-            BodyParts[0].Rotate(Vector3.left *
-                rotationSpeed *
-                Time.deltaTime *
-                Input.GetAxis("Horizontal"));
-        } else if (buttons[0].GetComponent<button_animation>().isButtonPushed() ||
-            buttons[2].GetComponent<button_animation>().isButtonPushed()) {
-            BodyParts[0].Rotate(Vector3.left *
-               rotationSpeed *
-               Time.deltaTime *
-               (buttons[0].GetComponent<button_animation>().isButtonPushed() ? -1 : 1));
+        bool pushedButton0 = buttons[0].GetComponent<button_animation>().isButtonPushed();
+        bool pushedButton2 = buttons[2].GetComponent<button_animation>().isButtonPushed();
+
+        if (!pushedButton0 && !pushedButton2 && isRotating)
+            isRotating = false;
+
+        if ((pushedButton0 || pushedButton2) && !isRotating) {
+            isRotating = true;
+            BodyParts[0].Rotate(Vector3.left * (pushedButton0 ? -1 : 1) * 90);
         }
+        BodyParts[0].Translate(BodyParts[0].up * speed * Time.smoothDeltaTime, Space.World);
 
         for (int i = 1 ; i < BodyParts.Count ; ++i) {
             curBodyPart = BodyParts[i];
