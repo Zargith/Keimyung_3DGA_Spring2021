@@ -17,14 +17,11 @@ public class ChangePanel : MonoBehaviour
     // Update is called once per frame
     void Change()
     {
-        if (transform.position.z >= Left.transform.position.z) {
-            Debug.Log("end");
-        } else if (transform.position.z <= Right.transform.position.z) {
-            Debug.Log("dead");
-        } else if (transform.position.y >= Up.transform.position.y) {
-            Debug.Log("dead");
-        } else if (transform.position.y <= Down.transform.position.y) {
-            Debug.Log("dead");
+        if ((transform.position.z >= Left.transform.position.z) ||
+            (transform.position.z <= Right.transform.position.z) ||
+            (transform.position.y >= Up.transform.position.y) ||
+            (transform.position.y <= Down.transform.position.y)) {
+            GetComponentInParent<SnakeMovement>().End();
         }
     }
 }

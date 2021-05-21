@@ -15,21 +15,22 @@ public class RandomAppear : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Appear();
+        Appear(0);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "snake") {
-            Appear();
+            Appear(Random.Range(0, 10) % 2);
             snake.GetComponent<SnakeMovement>().AddBodyPart();
+            snake.GetComponent<SnakeMovement>().IncreaseSpeed();
         }
     }
 
     // Update is called once per frame
-    void Appear()
+    public void Appear(int rand)
     {
-        Vector3 pos = new Vector3(44.1f, Random.Range(Down.transform.position.y + 1, Up.transform.position.y - 1), Random.Range(Right.transform.position.z + 1, Left.transform.position.z - 1));
+        Vector3 pos = new Vector3(rand == 0 ? -0.132f : -0.095f, Random.Range(Down.transform.position.y + 0.02f, Up.transform.position.y - 0.02f), Random.Range(Right.transform.position.z + 0.02f, Left.transform.position.z - 0.02f));
         apple.transform.position = pos;
     }
 }
