@@ -12,11 +12,13 @@ public class button_animation : MonoBehaviour
 	[SerializeField] bool collideWithMouse = false;
 	[SerializeField] bool collideWithTaggedGameObject = false;
 	[SerializeField] string colliderTag = null;
+	AudioSource audioSource;
 
 	void Start()
 	{
 		startPosition = topPart.transform.position.y;
 		endPosition = startPosition - 0.085f;
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Update()
@@ -34,19 +36,23 @@ public class button_animation : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		if (collideWithMouse)
+		if (collideWithMouse) {
 			buttonIsPushed = true;
+			audioSource.Play();
+		}
 	}
 
-	void OntriggerEnter(Collision other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (collideWithTaggedGameObject) {
 			if (colliderTag == null || colliderTag.Trim() == "") {
 				Debug.LogError("colliderTag needs to be not null or empty");
 				return;
-			}
+			} {
 			if (other.gameObject.CompareTag(colliderTag))
 				buttonIsPushed = true;
+				audioSource.Play();
+			}
 		}
 	}
 

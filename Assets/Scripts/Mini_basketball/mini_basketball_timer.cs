@@ -5,27 +5,41 @@ using UnityEngine.UI;
 
 public class mini_basketball_timer : MonoBehaviour
 {
-    public mini_basketball_GameManager manager;
-    public Text timerText;
-    public float seconds = 30;
-    public float miliseconds = 0;
+	[SerializeField] mini_basketball_GameManager manager;
+	[SerializeField] Text timerText;
+	[SerializeField] float _minutes = 1;
+	[SerializeField] float _seconds = 30;
+	[SerializeField] float _miliseconds = 1000;
 
-    void Update() {
-        if (!manager.gameStarted)
-            return;
+	void Update() {
+		if (!manager.gameStarted)
+			return;
 
-        if (miliseconds <= 0 && seconds <= 0) {
-            timerText.text = "0:00";
-            manager.gameStarted = false;
-            return;
-        }
+		if (_minutes <= 0 && _seconds <= 0 && _miliseconds <= 0) {
+			timerText.text = "00:00:000";
+			manager.gameStarted = false;
+			return;
+		}
 
-        if (miliseconds <= 0) {
-            if (seconds >= 0)
-                seconds--;
-            miliseconds = 100;
-        }
-        miliseconds -= Time.deltaTime * 100;
-        timerText.text = seconds.ToString() + ":" + ((int)miliseconds).ToString();
-    }
+		if(_miliseconds <= 0) {
+			if(_seconds <= 0) {
+				_minutes--;
+				_seconds = 59;
+			}
+			else if(_seconds >= 0)
+				_seconds--;
+
+			_miliseconds = 1000;
+		}
+		_miliseconds -= Time.deltaTime * 1000;
+
+		timerText.text = string.Format("{0:00}:{1:00}:{2:000}", _minutes, _seconds, (int)_miliseconds);
+	}
+
+	public void setTimer(float minutes = 1f, float seconds = 30,  float miliseconds = 1000)
+	{
+		_minutes = minutes;
+		_seconds = seconds;
+		_miliseconds = miliseconds;
+	}
 }

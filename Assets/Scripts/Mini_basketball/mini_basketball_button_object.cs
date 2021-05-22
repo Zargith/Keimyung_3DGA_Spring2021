@@ -10,11 +10,13 @@ public class mini_basketball_button_object : MonoBehaviour
 	double startPosition;
 	double endPosition;
 	[SerializeField] float movingSpeed = 0.25f;
+	AudioSource audioSource;
 
 	void Start()
 	{
 		startPosition = topPart.transform.position.y;
 		endPosition = startPosition - 0.085;
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Update()
@@ -32,6 +34,7 @@ public class mini_basketball_button_object : MonoBehaviour
 	void OnMouseDown() {
 		if (!manager.gameStarted) {
 			buttonIsPushed = true;
+			audioSource.Play();
 			manager.startGame();
 		}
 	}
@@ -39,6 +42,7 @@ public class mini_basketball_button_object : MonoBehaviour
 	 void OnTriggerEnter(Collider other) {
 		if (other.gameObject.CompareTag("player_hand") && !manager.gameStarted) {
 			buttonIsPushed = true;
+			audioSource.Play();
 			manager.startGame();
 		}
 	
