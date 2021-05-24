@@ -1,142 +1,148 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SnakeMovement : MonoBehaviour
 {
-    public List<Transform> BodyParts = new List<Transform>();
+	[SerializeField] GameObject[] buttons;
 
-    public float minDistance = 0.25f;
-    public float speed = 1f;
-    public float rotationSpeed = 50f;
-    public int size = 1;
+	public Text timerText;
+	public float seconds = 3;
 
-    public GameObject bodyPrefab;
+	public List<GameObject> Body = new List<GameObject>();
+	private List<Transform> BodyParts = new List<Transform>();
 
-    private float dis;
-    private Transform curBodyPart;
-    private Transform prevBodyPart;
-    private bool _change = false;
+	public float minDistance = 0.025f;
+	public float speed = 1f;
+	public float rotationSpeed = 50f;
+	public int size = 1;
 
-    public enum plane
-    {
-        FRONT,
-        LEFT,
-        BACK,
-        RIGHT
-    }
+	[SerializeField] GameObject Apple;
 
-    private enum Dir
-    {
-        RIGHT,
-        LEFT,
-        NONE
-    }
+	public GameObject bodyPrefab;
 
-    private Dir dir = Dir.LEFT;
-    private Dir preDir = Dir.LEFT;
+	private float dis;
+	private Transform curBodyPart;
+	private Transform prevBodyPart;
+	private Vector3 initPos;
+	bool firstPlane = true;
+	private float originSpeed;
 
-    private float time = 0f;
+	// Start is called before the first frame update
+	void Start()
+	{
+		originSpeed = speed;
+		BodyParts.Add(Body[0].transform);
+		initPos = BodyParts[0].transform.position;
+		for (int i = 0 ; i < size - 1 ; ++i) {
+			AddBodyPart();
+		}
+	}
 
-    public plane _currPlane = plane.FRONT;
-    private plane _pastPlane = plane.RIGHT;
-    private Vector3 prevPos;
-    private Vector3 prevRot;
-    [SerializeField] pinchSnake pinchLeft;
-    [SerializeField] pinchSnake pinchRight;
+	bool isChangingPlan = false;
+	void Update()
+	{
+		if (seconds <= 0) {
+			Move();
+		} else
+			DecreaseTime();
 
+		if (Input.GetKey(KeyCode.E))
+			AddBodyPart();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        prevPos = BodyParts[0].transform.position;
-        for (int i = 0 ; i < size - 1 ; ++i) {
-            AddBodyPart();
-        }
-    }
+		bool pushedButton1 = buttons[1].GetComponent<button_animation>().isButtonPushed();
+		if (!pushedButton1 && isChangingPlan)
+			isChangingPlan = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        Move();
+		if ((Input.GetKeyDown(KeyCode.A) || pushedButton1) && !isChangingPlan)
+			ChangePlan();
+	}
 
-        if (Input.GetKey(KeyCode.E))
-            AddBodyPart();
-    }
+	void DecreaseTime()
+	{
+		seconds -= 1 * Time.deltaTime;
+		timerText.text = ((int)seconds).ToString();
+		if (seconds <= 0)
+			timerText.text = "";
+	}
 
-    public void Move()
-    {
+	void ChangePlan()
+	{
+		isChangingPlan = true;
+		if (firstPlane) {
+			firstPlane = false;
+			transform.position = new Vector3(-0.105f, transform.position.y, transform.position.z);
+		} else {
+			firstPlane = true;
+			transform.position = new Vector3(-0.143f, transform.position.y, transform.position.z);
+		}
+	}
 
-        plane tmp = BodyParts[0].GetComponent<ChangePanel>().GetBodyDir();
-        if (tmp != _currPlane) {
-            _pastPlane = _currPlane;
-            _currPlane = tmp;
+	public void IncreaseSpeed()
+	{
+		speed += 0.025f;
+	}
 
-            Debug.Log("past : " + _pastPlane);
-            Debug.Log("curr : " + _currPlane);
-        }
+	public void End()
+	{
+		seconds = 4;
+		for (int i = 1 ; i < Body.Count ; ++i) {
+			Destroy(Body[i]);
+		}
+		BodyParts.Clear();
+		BodyParts.Add(Body[0].transform);
+		BodyParts[0].position = initPos;
+		Apple.GetComponent<RandomAppear>().Appear(0);
+		speed = originSpeed;
+		BodyParts[0].transform.rotation = new Quaternion(0, 0, 0, 0);
+		firstPlane = true;
+		isRotating = false;
+		isChangingPlan = false;
+	}
 
-        // Move
-        if ((_currPlane == plane.FRONT && _pastPlane == plane.RIGHT) ||
-            (_currPlane == plane.LEFT && _pastPlane == plane.FRONT) ||
-            (_currPlane == plane.BACK && _pastPlane == plane.LEFT) ||
-            (_currPlane == plane.RIGHT && _pastPlane == plane.BACK)) {
-            BodyParts[0].Translate((_currPlane == plane.RIGHT ? BodyParts[0].right :
-                _currPlane == plane.LEFT ? BodyParts[0].right * -1 :
-                _currPlane == plane.FRONT ? BodyParts[0].forward : BodyParts[0].forward * -1)
-                * speed * Time.smoothDeltaTime, Space.World);
-        } else if ((_currPlane == plane.RIGHT && _pastPlane == plane.FRONT) ||
-            (_currPlane == plane.BACK && _pastPlane == plane.RIGHT) ||
-            (_currPlane == plane.LEFT && _pastPlane == plane.BACK) ||
-            (_currPlane == plane.FRONT && _pastPlane == plane.LEFT)) {
-            BodyParts[0].Translate((_currPlane == plane.RIGHT ? BodyParts[0].right * -1 :
-                _currPlane == plane.LEFT ? BodyParts[0].right :
-                _currPlane == plane.FRONT ? BodyParts[0].forward * -1 : BodyParts[0].forward)
-                * speed * Time.smoothDeltaTime, Space.World);
-        }
+	bool isRotating = false;
 
-        bool isPinchingLeft = pinchLeft.isPinching();
-        bool isPinchingRight = pinchRight.isPinching();
-        Debug.Log("isPinchingLeft " + isPinchingLeft);
-        Debug.Log("isPinchingRight " + isPinchingRight);
-        if (Input.GetAxis("Horizontal") != 0 || isPinchingLeft || isPinchingRight) {
-            // Change dir
-            preDir = Input.GetAxis("Horizontal") > 0 || isPinchingRight ? Dir.RIGHT : Dir.LEFT;
-            BodyParts[0].Rotate((_currPlane == plane.RIGHT ? Vector3.forward : _currPlane == plane.LEFT ? Vector3.forward : Vector3.right) *
-                rotationSpeed *
-                Time.deltaTime *
-                (_currPlane == plane.RIGHT ? -1 : _currPlane == plane.LEFT ? 1 : -1) * (preDir == Dir.RIGHT ? 1 : -1));
-        }
+	public void Move()
+	{
+		bool pushedButton0 = buttons[0].GetComponent<button_animation>().isButtonPushed();
+		bool pushedButton2 = buttons[2].GetComponent<button_animation>().isButtonPushed();
 
-        for (int i = 1 ; i < BodyParts.Count ; ++i) {
-            curBodyPart = BodyParts[i];
-            prevBodyPart = BodyParts[i - 1];
+		if (!pushedButton0 && !pushedButton2 && isRotating)
+			isRotating = false;
 
-            dis = Vector3.Distance(prevBodyPart.position, curBodyPart.position);
+		if ((pushedButton0 || pushedButton2) && !isRotating) {
+			isRotating = true;
+			BodyParts[0].Rotate(Vector3.left * (pushedButton0 ? -1 : 1) * 90);
+		}
+		BodyParts[0].Translate(BodyParts[0].up * speed * Time.smoothDeltaTime, Space.World);
 
-            Vector3 newPos = prevBodyPart.position;
+		for (int i = 1 ; i < BodyParts.Count ; ++i) {
+			curBodyPart = BodyParts[i];
+			prevBodyPart = BodyParts[i - 1];
 
-            if (curBodyPart.GetComponent<ChangePanel>().GetBodyDir() == plane.LEFT || curBodyPart.GetComponent<ChangePanel>().GetBodyDir() == plane.RIGHT)
-                newPos.z = prevBodyPart.position.z;
-            else
-                newPos.x = prevBodyPart.position.x;
+			dis = Vector3.Distance(prevBodyPart.position, curBodyPart.position);
 
-            float T = Time.deltaTime * dis / minDistance * speed;
+			Vector3 newPos = prevBodyPart.position;
 
-            if (T > 0.5f)
-                T = 0.5f;
-            curBodyPart.position = Vector3.Slerp(curBodyPart.position, newPos, T);
-            curBodyPart.rotation = Quaternion.Slerp(curBodyPart.rotation, prevBodyPart.rotation, T);
-        }
-        prevPos = BodyParts[0].transform.position;
+			newPos.x = prevBodyPart.position.x;
 
-    }
+			float T = Time.deltaTime * dis / minDistance * speed;
 
-    public void AddBodyPart()
-    {
-        Transform newPart = (Instantiate(bodyPrefab, BodyParts[BodyParts.Count - 1].position, BodyParts[BodyParts.Count - 1].rotation) as GameObject).transform;
+			if (T > 0.5f)
+				T = 0.5f;
+			curBodyPart.position = Vector3.Slerp(curBodyPart.position, newPos, T);
+			curBodyPart.rotation = Quaternion.Slerp(curBodyPart.rotation, prevBodyPart.rotation, T);
+		}
+	}
 
-        newPart.SetParent(transform);
-        BodyParts.Add(newPart);
-    }
+	public void AddBodyPart()
+	{
+		GameObject newPart = Instantiate(bodyPrefab, BodyParts[BodyParts.Count - 1].position, BodyParts[BodyParts.Count - 1].rotation);
+		Transform newElem = newPart.transform;
+
+		newElem.SetParent(transform);
+		BodyParts.Add(newElem);
+		Body.Add(newPart);
+	}
 }
