@@ -9,6 +9,8 @@ public class Launchable : MonoBehaviour
     bool cuted = false;
     float cutForce = 1.5f;
 
+    [SerializeField] AudioSource slice;
+
     private void Start()
     {
         man = FindObjectOfType<ScoreManagerFruit>();
@@ -22,6 +24,7 @@ public class Launchable : MonoBehaviour
     {
         if (cuted)
             return;
+        slice.Play();
         cuted = true;
         //activate & setPosition
         _main.gameObject.SetActive(false);
