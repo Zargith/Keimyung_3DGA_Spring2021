@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClickableByShoot : Shootable
+public class ClickableByShoot : MonoBehaviour, IShootable
 {
-    override internal void OnHit()
+    void IShootable.OnHit()
     {
         GetComponent<Button>().onClick.Invoke();
     }
