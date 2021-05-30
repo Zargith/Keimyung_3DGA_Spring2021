@@ -19,6 +19,9 @@ public class ScoreManager : MonoBehaviour
     private int playerScore = 0;
 
     private int aiScore = 0;
+    public bool finished { get; private set; } = false;
+
+    public Player.Which winner { get; private set; } = Player.Which.NONE;
 
     public void SetMaxScore(int score)
     {
@@ -27,6 +30,8 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetScore()
     {
+        finished = false;
+        winner = Player.Which.NONE;
         playerScore = 0;
         aiScore = 0;
         UpdateScoreText(playerScoreText, playerScorePrefix, playerScore);
@@ -40,22 +45,35 @@ public class ScoreManager : MonoBehaviour
             case Player.Which.PLAYER:
                 playerScore++;
                 UpdateScoreText(playerScoreText, playerScorePrefix, playerScore);
-                GameObject.Find("WinnerPanel").GetComponent<GameState>().NextRound(Player.Which.PLAYER);
+                GameObject.Find("GameStatePanel").GetComponent<GameState>().NextRound(Player.Which.PLAYER);
                 if (playerScore == maxScore)
                 {
-                    GameObject.Find("WinnerPanel").GetComponent<GameState>().EndGame(Player.Which.PLAYER);
+                    finished = true;
+                    winner = Player.Which.PLAYER;
+                    //GameObject.Find("WinnerPanel").GetComponent<GameState>().EndGame(Player.Which.PLAYER);
                 }
                 break;
             case Player.Which.AI:
                 aiScore++;
                 UpdateScoreText(aiScoreText, aiScorePrefix, aiScore);
-                GameObject.Find("WinnerPanel").GetComponent<GameState>().NextRound(Player.Which.AI);
+                GameObject.Find("GameStatePanel").GetComponent<GameState>().NextRound(Player.Which.AI);
                 if (aiScore == maxScore)
                 {
-                    GameObject.Find("WinnerPanel").GetComponent<GameState>().EndGame(Player.Which.AI);
+                    finished = true;
+                    winner = Player.Which.AI;
+                    //GameObject.Find("WinnerPanel").GetComponent<GameState>().EndGame(Player.Which.AI);
                 }
                 break;
         }
+    }
+
+    public Player.Which getMostPointPlayer()
+    {
+        if (playerScore > aiScore)
+            return Player.Which.PLAYER;
+        else if (aiScore > playerScore)
+            return Player.Which.AI;
+        return Player.Which.NONE;
     }
 
     private void UpdateScoreText(Text text, string prefix, int score)

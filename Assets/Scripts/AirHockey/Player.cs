@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public enum Which
     {
+        NONE,
         PLAYER,
         AI
     }
