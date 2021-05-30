@@ -773,7 +773,7 @@ MonoBehaviour:
   - {fileID: 790498046326573997, guid: 5e98a1f4b171e354ea0809bc5c2c99c6, type: 3}
   _intervalMin: 0.79
   _stop: 0
-  _roundTime: 1
+  _roundTime: 10
 --- !u!114 &8139765618066781513
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mini_basketball.unity
     guid: e0519a074f8997348826e706af6ed713
+  - enabled: 1
+    path: Assets/Scenes/Snake.unity
+    guid: 83f732cf4cf34a942ab67cf4512ca5ed
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bee6e82151b0a3646a591b82cfb45c21, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 849b33a9212d7684bbba5928d2a28a36, type: 2}

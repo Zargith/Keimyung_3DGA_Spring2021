@@ -144,7 +144,7 @@ public class HandGun : MonoBehaviour
 
         { // Enemy destroy
             if (didHit)
-                shootRC.collider.GetComponent<Shootable>()?.OnHit();
+                shootRC.collider.GetComponent<IShootable>()?.OnHit();
         }
 
 
