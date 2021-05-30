@@ -28,6 +28,7 @@ public class FruitGameManager : MonoBehaviour
     {
         if(ba.isButtonPushed() && !gameStarted)
         {
+            print("aaa");
             spawnerInstance = Instantiate(spawnerPrefab);
             gameStarted = true;
             spScript = spawnerInstance.GetComponent<Spawner>();
