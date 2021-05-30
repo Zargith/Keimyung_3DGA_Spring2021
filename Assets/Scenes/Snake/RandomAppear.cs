@@ -24,13 +24,14 @@ public class RandomAppear : MonoBehaviour
             Appear(Random.Range(0, 10) % 2);
             snake.GetComponent<SnakeMovement>().AddBodyPart();
             snake.GetComponent<SnakeMovement>().IncreaseSpeed();
-        }
+        } else if (collision.gameObject.tag == "obstacle")
+            Appear(Random.Range(0, 10) % 2);
     }
 
     // Update is called once per frame
     public void Appear(int rand)
     {
-        Vector3 pos = new Vector3(rand == 0 ? -0.132f : -0.095f, Random.Range(Down.transform.position.y + 0.02f, Up.transform.position.y - 0.02f), Random.Range(Right.transform.position.z + 0.02f, Left.transform.position.z - 0.02f));
+        Vector3 pos = new Vector3(rand == 0 ? -0.135f : -0.1f, Random.Range(Down.transform.position.y + 0.02f, Up.transform.position.y - 0.02f), Random.Range(Right.transform.position.z + 0.02f, Left.transform.position.z - 0.02f));
         apple.transform.position = pos;
     }
 }

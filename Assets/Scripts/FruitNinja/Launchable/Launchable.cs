@@ -42,7 +42,8 @@ public class Launchable : MonoBehaviour
 
     public void yolo()
     {
-        man.addToScore(1000);
+        if (man != null)
+            man.addToScore(1000);
     }
 }
 

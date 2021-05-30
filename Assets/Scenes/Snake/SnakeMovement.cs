@@ -19,6 +19,8 @@ public class SnakeMovement : MonoBehaviour
 	public int size = 1;
 
 	[SerializeField] GameObject Apple;
+	[SerializeField] GameObject startButton;
+	[SerializeField] GameObject highScoreTxt;
 
 	public GameObject bodyPrefab;
 
@@ -26,18 +28,36 @@ public class SnakeMovement : MonoBehaviour
 	private Transform curBodyPart;
 	private Transform prevBodyPart;
 	private Vector3 initPos;
+	private Vector3 initPosElem;
 	bool firstPlane = true;
 	private float originSpeed;
+	bool start = false;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		originSpeed = speed;
+		initPosElem = transform.position;
 		BodyParts.Add(Body[0].transform);
 		initPos = BodyParts[0].transform.position;
 		for (int i = 0 ; i < size - 1 ; ++i) {
 			AddBodyPart();
 		}
+		startButton.GetComponent<Button>().onClick.AddListener(delegate {
+			SetStart(true);
+		});
+	}
+
+	public void SetStart(bool newStartValue)
+    {
+		highScoreTxt.SetActive(!newStartValue);
+		startButton.SetActive(!newStartValue);
+		start = newStartValue;
+    }
+
+	void SetHighScore(int score)
+	{
+		PlayerPrefs.SetInt("SnakeHighScore", score);
 	}
 
 	bool isChangingPlan = false;
@@ -45,8 +65,9 @@ public class SnakeMovement : MonoBehaviour
 	{
 		if (seconds <= 0) {
 			Move();
-		} else
+		} else if (start) {
 			DecreaseTime();
+        }
 
 		if (Input.GetKey(KeyCode.E))
 			AddBodyPart();
@@ -81,17 +102,28 @@ public class SnakeMovement : MonoBehaviour
 
 	public void IncreaseSpeed()
 	{
-		speed += 0.025f;
+		speed += 0.01f;
 	}
 
 	public void End()
 	{
 		seconds = 4;
+		int score = GetComponent<SnakeScore>().GetScore();
+		int highScore = PlayerPrefs.GetInt("SnakeHighScore");
+		if (score > highScore) {
+			highScore = score;
+			SetHighScore(score);
+		}
+		highScoreTxt.GetComponent<Text>().text = "HighScore: " + highScore.ToString();
+		GameObject tmp = Body[0];
 		for (int i = 1 ; i < Body.Count ; ++i) {
 			Destroy(Body[i]);
 		}
+		Body.Clear();
+		Body.Add(tmp);
 		BodyParts.Clear();
 		BodyParts.Add(Body[0].transform);
+		transform.position = initPosElem;
 		BodyParts[0].position = initPos;
 		Apple.GetComponent<RandomAppear>().Appear(0);
 		speed = originSpeed;
@@ -99,6 +131,8 @@ public class SnakeMovement : MonoBehaviour
 		firstPlane = true;
 		isRotating = false;
 		isChangingPlan = false;
+		SetStart(false);
+		GetComponent<SnakeScore>().ResetScore();
 	}
 
 	bool isRotating = false;
@@ -116,7 +150,6 @@ public class SnakeMovement : MonoBehaviour
 			BodyParts[0].Rotate(Vector3.left * (pushedButton0 ? -1 : 1) * 90);
 		}
 		BodyParts[0].Translate(BodyParts[0].up * speed * Time.smoothDeltaTime, Space.World);
-
 		for (int i = 1 ; i < BodyParts.Count ; ++i) {
 			curBodyPart = BodyParts[i];
 			prevBodyPart = BodyParts[i - 1];
@@ -144,5 +177,14 @@ public class SnakeMovement : MonoBehaviour
 		newElem.SetParent(transform);
 		BodyParts.Add(newElem);
 		Body.Add(newPart);
+		GetComponent<SnakeScore>().UpdateScore();
+		StartCoroutine("AddTag", newPart);
 	}
+
+	IEnumerator AddTag(GameObject a)
+    {
+		yield return new WaitForSeconds(2f);
+		if (a)
+			a.tag = "bodyPart";
+    }
 }
