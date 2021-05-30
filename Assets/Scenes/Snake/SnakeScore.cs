@@ -9,11 +9,7 @@ public class SnakeScore : MonoBehaviour
 
 	private int score = 0;
 
-	void Start()
-	{
-	}
-
-	void Update()
+	public void UpdateScore()
 	{
 		int size = GetComponent<SnakeMovement>().Body.Count;
 		if (size != score) {
