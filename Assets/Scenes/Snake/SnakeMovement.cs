@@ -20,7 +20,7 @@ public class SnakeMovement : MonoBehaviour
 
 	[SerializeField] GameObject Apple;
 	[SerializeField] GameObject startButton;
-	[SerializeField] GameObject highScore;
+	[SerializeField] GameObject highScoreTxt;
 
 	public GameObject bodyPrefab;
 
@@ -50,16 +50,14 @@ public class SnakeMovement : MonoBehaviour
 
 	public void SetStart(bool newStartValue)
     {
-		highScore.SetActive(!newStartValue);
+		highScoreTxt.SetActive(!newStartValue);
 		startButton.SetActive(!newStartValue);
 		start = newStartValue;
     }
 
 	void SetHighScore(int score)
 	{
-		int s = (score - 1) * 100;
-		PlayerPrefs.SetInt("SnakeHighScore", s);
-		highScore.GetComponent<Text>().text = "HighScore: " + s.ToString();
+		PlayerPrefs.SetInt("SnakeHighScore", score);
 	}
 
 	bool isChangingPlan = false;
@@ -110,10 +108,13 @@ public class SnakeMovement : MonoBehaviour
 	public void End()
 	{
 		seconds = 4;
-		int score = PlayerPrefs.GetInt("SnakeHighScore");
-		if (score < (Body.Count - 1) * 100)
-			SetHighScore(Body.Count);
-		highScore.GetComponent<Text>().text = "HighScore: " + score.ToString();
+		int score = GetComponent<SnakeScore>().GetScore();
+		int highScore = PlayerPrefs.GetInt("SnakeHighScore");
+		if (score > highScore) {
+			highScore = score;
+			SetHighScore(score);
+		}
+		highScoreTxt.GetComponent<Text>().text = "HighScore: " + highScore.ToString();
 		GameObject tmp = Body[0];
 		for (int i = 1 ; i < Body.Count ; ++i) {
 			Destroy(Body[i]);
@@ -131,7 +132,7 @@ public class SnakeMovement : MonoBehaviour
 		isRotating = false;
 		isChangingPlan = false;
 		SetStart(false);
-		GetComponent<SnakeScore>().UpdateScore();
+		GetComponent<SnakeScore>().ResetScore();
 	}
 
 	bool isRotating = false;
