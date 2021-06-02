@@ -9,11 +9,15 @@ public class AI : MonoBehaviour
     Vector3 targetPos;
     float gizmoFinalZ;
 
+
+    readonly float m_defaultX = 0.6f;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         puckTransform = GameObject.Find("Puck").GetComponent<Transform>();
+
         StartCoroutine("CalculatePosition");
         //Time.timeScale = 0.2f;
     }
@@ -44,12 +48,12 @@ public class AI : MonoBehaviour
 
     private void Replacement()
     {
-        MoveTo(new Vector3(0.6f, transform.position.y, transform.position.z));
+        MoveTo(new Vector3(m_defaultX, transform.position.y, transform.position.z));
     }
 
     private void Anticipation()
     {
-        MoveTo(new Vector3(0.6f, puckTransform.position.y, getPuckXProjection(0.6f)));
+        MoveTo(new Vector3(m_defaultX, puckTransform.position.y, getPuckXProjection(m_defaultX)));
     }
 
     private float getPuckXProjection(float x)
@@ -103,6 +107,6 @@ public class AI : MonoBehaviour
     /*
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(new Vector3(0.6f, transform.position.y, gizmoFinalZ), 0.2f);
+        Gizmos.DrawSphere(new Vector3(m_defaultX, transform.position.y, gizmoFinalZ), 0.2f);
     }*/
 }

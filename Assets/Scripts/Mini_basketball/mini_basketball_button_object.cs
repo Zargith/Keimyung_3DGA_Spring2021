@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class mini_basketball_button_object : MonoBehaviour
 {
 	[SerializeField] mini_basketball_GameManager manager;
 	[SerializeField] GameObject topPart;
+	[SerializeField] UnityEvent OnPressed;
+
 	bool buttonIsPushed = false;
 	double startPosition;
 	double endPosition;
@@ -35,7 +38,7 @@ public class mini_basketball_button_object : MonoBehaviour
 		if (!manager.gameStarted) {
 			buttonIsPushed = true;
 			audioSource.Play();
-			manager.startGame();
+			OnPressed.Invoke();
 		}
 	}
 
@@ -43,7 +46,7 @@ public class mini_basketball_button_object : MonoBehaviour
 		if (other.gameObject.CompareTag("player_hand") && !manager.gameStarted) {
 			buttonIsPushed = true;
 			audioSource.Play();
-			manager.startGame();
+			OnPressed.Invoke();
 		}
 	
 }

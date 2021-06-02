@@ -41,6 +41,7 @@ public class PaddleGrabbable : MonoBehaviour
         GetComponent<Rigidbody>().velocity = delta / Time.deltaTime;
     }
 
+
     private void CheckGrab(Hand hand, OVRSkeleton handSkeleton)
     {
         if (IsGrabbing(hand, handSkeleton.transform) && Vector3.Distance(transform.position, handSkeleton.transform.position) < MaxDistance)
