@@ -8,7 +8,7 @@ public class Bomb : Launchable
 
     new void yolo()
     {
-       man.addToScore(-10000);
+       man.addToScore(-15000);
     }
 
     override public void Launch(Vector3 beg, Vector3 end)

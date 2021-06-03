@@ -54,6 +54,15 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public int getMaxTime()
+    {
+        return _roundTime * _spawnable.Length;
+    }
+
+    public bool isStarted()
+    {
+        return _started;
+    }
 
 #if UNITY_EDITOR // This doesn't build properly, so we ignore it when building
     private void OnDrawGizmos()
