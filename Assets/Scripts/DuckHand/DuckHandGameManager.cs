@@ -8,9 +8,7 @@ public class DuckHandGameManager : MonoBehaviour
     [SerializeField] private Canvas PreGameCanvas;
     [SerializeField] private Canvas InGameCanvas;
 
-    [SerializeField] private LevelScroller m_levelScroller;
-
-    [SerializeField] private GameObject EnemyPrefab;
+    [SerializeField] private DuckSpawner DuckSpawner;
 
     [SerializeField] private int BaseHealth = 3;
 
@@ -21,6 +19,24 @@ public class DuckHandGameManager : MonoBehaviour
     private bool m_isRunning = false;
     private readonly Stopwatch m_gameTime = new Stopwatch();
 
+
+    [SerializeField] Vector3 InitialGravity = new Vector3(0, -3, 0);
+    [SerializeField] Vector3 GravityChange = new Vector3(0, -0.1f, 0);
+    private Vector3 GravityBackup;
+    private void Start()
+    {
+        GravityBackup = Physics.gravity;
+        Physics.gravity = InitialGravity;
+    }
+    private void OnDestroy()
+    {
+        Physics.gravity = GravityBackup;
+    }
+
+    private void Update()
+    {
+        Physics.gravity += GravityChange * Time.deltaTime;
+    }
 
     public void LoseHealth()
     {
@@ -39,8 +55,9 @@ public class DuckHandGameManager : MonoBehaviour
         PreGameCanvas.gameObject.SetActive(false);
         InGameCanvas.gameObject.SetActive(true);
 
+        DuckSpawner.StartSpawning();
+
         m_isRunning = true;
-        m_levelScroller.StartScrolling();
         CurrentHealth = BaseHealth;
         CurrentScore = 0;
 
@@ -51,31 +68,11 @@ public class DuckHandGameManager : MonoBehaviour
     {
         PreGameCanvas.gameObject.SetActive(true);
 
+        DuckSpawner.StopSpawning();
+        DuckSpawner.ClearAllDucks();
+
         m_isRunning = false;
-        m_levelScroller.StopScrolling();
         m_gameTime.Stop();
-
-        foreach (Transform child in m_levelScroller.transform)
-            Destroy(child.gameObject);
-    }
-
-    private void Awake()
-    {
-        m_levelScroller = FindObjectOfType<LevelScroller>();
-    }
-
-    public void Update()
-    {
-        if (!m_isRunning)
-            return;
-
-        if (Random.Range(0f, 3f) < Time.deltaTime)
-        {
-            var duck = Instantiate(EnemyPrefab, new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(5f, 10f)), Quaternion.identity, m_levelScroller.transform);
-
-            duck.GetComponent<Rigidbody>().angularVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-            //duck.transform.LookAt(GameObject.FindGameObjectWithTag("MainCamera").transform);
-        }
     }
     
 }
